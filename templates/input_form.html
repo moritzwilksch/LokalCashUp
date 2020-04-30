@@ -5,7 +5,7 @@
     <title>Abrechnung</title>
     <meta name="author" content="LOKAL">
     <meta name="description" content="Abrechnungsapp">
-    <!--<link rel="shortcut icon" href="favicon.ico" type="image/vnd.microsoft.icon">-->
+    <link rel="apple-touch-icon" href="/static/buy.png">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
@@ -17,7 +17,6 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
             integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
             crossorigin="anonymous"></script>
-
 
 
 </head>
@@ -41,86 +40,204 @@
             <div class="container">
                 <!-- ONE FORM ROW -->
                 <div class="form-row">
-                    <div class="col-md-6 mb-1">
+                    <div class="col-md-6 mb-3">
                         <div class="input-group md-1">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" style="width: 250px;">>=100€ Betrag</span>
                                 <input type="number" class="form-control" id="gt100In" placeholder="Betrag"
-                                       required onkeyup="document.getElementById('gt100Out').innerHTML = document.getElementById('gt100In').value + ',00 €'">
+                                       required
+                                       onkeyup="document.getElementById('gt100Out').innerHTML = document.getElementById('gt100In').value + ',00 €'">
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6 mb-1">
-                        <h3><span class="badge badge-pill badge-secondary" id="gt100Out">0,00 €</span></h3>
+                    <div class="col-md-6 mb-3">
+                        <h3><span class="badge  badge-light" id="gt100Out">0,00 €</span></h3>
                     </div>
                 </div>
 
                 <!-- ONE FORM ROW -->
                 <div class="form-row">
-                    <div class="col-md-6 mb-1">
+                    <div class="col-md-6 mb-3">
                         <div class="input-group md-1">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" style="width: 250px;">50€ Scheine</span>
                                 <input type="number" class="form-control" id="50eIn" placeholder="Anzahl"
-                                       required onkeyup="document.getElementById('50eOut').innerHTML = document.getElementById('50eIn').value*50 + ',00 €'">
+                                       required
+                                       onkeyup="document.getElementById('50eOut').innerHTML = document.getElementById('50eIn').value*50 + ',00 €'">
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6 mb-1">
-                        <h3><span class="badge badge-pill badge-secondary" id="50eOut">0,00 €</span></h3>
+                    <div class="col-md-6 mb-3">
+                        <h3><span class="badge  badge-light" id="50eOut">0,00 €</span></h3>
                     </div>
                 </div>
 
                 <!-- ONE FORM ROW -->
                 <div class="form-row">
-                    <div class="col-md-6 mb-1">
+                    <div class="col-md-6 mb-3">
                         <div class="input-group md-1">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" style="width: 250px;">20€ Scheine</span>
                                 <input type="number" class="form-control" id="20eIn" placeholder="Anzahl"
-                                       required onkeyup="document.getElementById('20eOut').innerHTML = document.getElementById('20eIn').value*20 + ',00 €'">
+                                       required
+                                       onkeyup="document.getElementById('20eOut').innerHTML = document.getElementById('20eIn').value*20 + ',00 €'">
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6 mb-1">
-                        <h3><span class="badge badge-pill badge-secondary" id="20eOut">0,00 €</span></h3>
+                    <div class="col-md-6 mb-3">
+                        <h3><span class="badge  badge-light" id="20eOut">0,00 €</span></h3>
                     </div>
                 </div>
 
                 <!-- ONE FORM ROW -->
                 <div class="form-row">
-                    <div class="col-md-6 mb-1">
+                    <div class="col-md-6 mb-3">
                         <div class="input-group md-1">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" style="width: 250px;">10€ Scheine</span>
                                 <input type="number" class="form-control" id="10eIn" placeholder="Anzahl"
-                                       required onkeyup="document.getElementById('10eOut').innerHTML = document.getElementById('10eIn').value*10 + ',00 €'">
+                                       required
+                                       onkeyup="document.getElementById('10eOut').innerHTML = document.getElementById('10eIn').value*10 + ',00 €'">
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6 mb-1">
-                        <h3><span class="badge badge-pill badge-secondary" id="10eOut">0,00 €</span></h3>
+                    <div class="col-md-6 mb-3">
+                        <h3><span class="badge  badge-light" id="10eOut">0,00 €</span></h3>
                     </div>
                 </div>
 
                 <!-- ONE FORM ROW -->
                 <div class="form-row">
-                    <div class="col-md-6 mb-1">
+                    <div class="col-md-6 mb-3">
                         <div class="input-group md-1">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" style="width: 250px;">5€ Scheine</span>
                                 <input type="number" class="form-control" id="5eIn" placeholder="Anzahl"
-                                       required onkeyup="document.getElementById('5eOut').innerHTML = document.getElementById('5eIn').value*5 + ',00 €'">
+                                       required
+                                       onkeyup="document.getElementById('5eOut').innerHTML = document.getElementById('5eIn').value*5 + ',00 €'">
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6 mb-1">
-                        <h3><span class="badge badge-pill badge-secondary" id="5eOut">0,00 €</span></h3>
+                    <div class="col-md-6 mb-3">
+                        <h3><span class="badge  badge-light" id="5eOut">0,00 €</span></h3>
+                    </div>
+                </div>
+
+                <!-- ONE FORM ROW -->
+                <div class="form-row">
+                    <div class="col-md-6 mb-3">
+                        <div class="input-group md-1">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" style="width: 250px;">2€ Münzen</span>
+                                <input type="number" class="form-control" id="2eIn" placeholder="Anzahl"
+                                       required
+                                       onkeyup="document.getElementById('2eOut').innerHTML = document.getElementById('2eIn').value*2 + ',00 €'">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <h3><span class="badge  badge-light" id="2eOut">0,00 €</span></h3>
+                    </div>
+                </div>
+
+                <!-- ONE FORM ROW -->
+                <div class="form-row">
+                    <div class="col-md-6 mb-3">
+                        <div class="input-group md-1">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" style="width: 250px;">1€ Münzen</span>
+                                <input type="number" class="form-control" id="1eIn" placeholder="Anzahl"
+                                       required
+                                       onkeyup="document.getElementById('1eOut').innerHTML = document.getElementById('1eIn').value*1 + ',00 €'">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <h3><span class="badge  badge-light" id="1eOut">0,00 €</span></h3>
+                    </div>
+                </div>
+
+                <!-- ONE FORM ROW -->
+                <div class="form-row">
+                    <div class="col-md-6 mb-3">
+                        <div class="input-group md-1">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" style="width: 250px;">50ct Münzen</span>
+                                <input type="number" class="form-control" id="50ctIn" placeholder="Anzahl"
+                                       required
+                                       onkeyup="document.getElementById('50ctOut').innerHTML = (document.getElementById('50ctIn').value*0.5 + ' €').replace('.', ',');">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <h3><span class="badge  badge-light" id="50ctOut">0,00 €</span></h3>
+                    </div>
+                </div>
+
+                <!-- ONE FORM ROW -->
+                <div class="form-row">
+                    <div class="col-md-6 mb-3">
+                        <div class="input-group md-1">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" style="width: 250px;">20ct Münzen</span>
+                                <input type="number" class="form-control" id="20ctIn" placeholder="Anzahl"
+                                       required
+                                       onkeyup="document.getElementById('20ctOut').innerHTML = (document.getElementById('20ctIn').value*0.2 + ' €').replace('.', ',');">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <h3><span class="badge  badge-light" id="20ctOut">0,00 €</span></h3>
+                    </div>
+                </div>
+
+                <!-- ONE FORM ROW -->
+                <div class="form-row">
+                    <div class="col-md-6 mb-3">
+                        <div class="input-group md-1">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" style="width: 250px;">10ct Münzen</span>
+                                <input type="number" class="form-control" id="10ctIn" placeholder="Anzahl"
+                                       required
+                                       onkeyup="document.getElementById('10ctOut').innerHTML = (document.getElementById('10ctIn').value*0.1 + ' €').replace('.', ',');">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <h3><span class="badge  badge-light" id="10ctOut">0,00 €</span></h3>
                     </div>
                 </div>
 
                 <hr>
 
+
+                <h4>Geld in der Kasse: <span class="badge  badge-dark">________ €</span></h4>
+
+                <!-- ONE FORM ROW -->
+                <div class="form-row">
+                    <div class="col-md-6 mb-3">
+                        <div class="input-group md-1">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" style="width: 250px;">Barentnahmen</span>
+                                <input type="number" class="form-control" id="barentnahmen" placeholder="Euro"
+                                       required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ONE FORM ROW -->
+                <div class="form-row">
+                    <div class="col-md-6 mb-3">
+                        <div class="input-group md-1">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" style="width: 250px;">Bareinlagen</span>
+                                <input type="number" class="form-control" id="bareinlagen" placeholder="Euro"
+                                       required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
             </div>
 
@@ -133,9 +250,15 @@
 
 
     <div class="d-flex flex-row-reverse">
-        <button type="submit" class="btn btn-primary btn-lg mx-auto">Submit</button>
-        <button type="button" onclick="window.location.href='https://thumbs.gfycat.com/SizzlingQuestionableAntipodesgreenparakeet-mobile.mp4'" class="btn btn-outline-secondary btn-lg mx-auto">Drucken</button>
-        <button type="button" onclick="window.location.href='https://thumbs.gfycat.com/SizzlingQuestionableAntipodesgreenparakeet-mobile.mp4'" class="btn btn-outline-danger btn-lg mx-auto">Reset</button>
+        <button type="submit" class="btn btn-primary btn-lg mx-auto">Beträge berechnen</button>
+        <button type="button"
+                onclick="window.location.href='https://thumbs.gfycat.com/SizzlingQuestionableAntipodesgreenparakeet-mobile.mp4'"
+                class="btn btn-outline-info btn-lg mx-auto">Drucken
+        </button>
+        <button type="button"
+                onclick="window.location.href='https://thumbs.gfycat.com/SizzlingQuestionableAntipodesgreenparakeet-mobile.mp4'"
+                class="btn btn-outline-danger btn-lg mx-auto">Reset
+        </button>
     </div>
 </form>
 
