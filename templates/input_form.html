@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Abrechnung</title>
+    <meta name="author" content="LOKAL">
+    <meta name="description" content="Abrechnungsapp">
+    <!--<link rel="shortcut icon" href="favicon.ico" type="image/vnd.microsoft.icon">-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+
+
+
+</head>
+<body class="bg-light">
+<hr>
+<h2 style="text-align: center">Abrechnung</h2>
+
+
+<form name="theForm">
+    <div class="input-group mb-3 mx-auto" style="max-width: 20%;">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="inputGroup-sizing-default">Datum</span>
+        </div>
+        <input type="text" class="form-control" placeholder="TT.MM.JJJJ"
+               aria-describedby="inputGroup-sizing-default" required>
+    </div>
+    <div class="card border-dark mb-3 mx-auto" style="max-width: 90%;">
+        <div class="card-header"><h5>Stückelung</h5></div>
+        <div class="card-body text-dark">
+
+            <div class="container">
+                <!-- ONE FORM ROW -->
+                <div class="form-row">
+                    <div class="col-md-6 mb-1">
+                        <div class="input-group md-1">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" style="width: 250px;">>=100€ Betrag</span>
+                                <input type="number" class="form-control" id="gt100In" placeholder="Betrag"
+                                       required onkeyup="document.getElementById('gt100Out').innerHTML = document.getElementById('gt100In').value + ',00 €'">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-1">
+                        <h3><span class="badge badge-pill badge-secondary" id="gt100Out">0,00 €</span></h3>
+                    </div>
+                </div>
+
+                <!-- ONE FORM ROW -->
+                <div class="form-row">
+                    <div class="col-md-6 mb-1">
+                        <div class="input-group md-1">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" style="width: 250px;">50€ Scheine</span>
+                                <input type="number" class="form-control" id="50eIn" placeholder="Anzahl"
+                                       required onkeyup="document.getElementById('50eOut').innerHTML = document.getElementById('50eIn').value*50 + ',00 €'">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-1">
+                        <h3><span class="badge badge-pill badge-secondary" id="50eOut">0,00 €</span></h3>
+                    </div>
+                </div>
+
+                <!-- ONE FORM ROW -->
+                <div class="form-row">
+                    <div class="col-md-6 mb-1">
+                        <div class="input-group md-1">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" style="width: 250px;">20€ Scheine</span>
+                                <input type="number" class="form-control" id="20eIn" placeholder="Anzahl"
+                                       required onkeyup="document.getElementById('20eOut').innerHTML = document.getElementById('20eIn').value*20 + ',00 €'">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-1">
+                        <h3><span class="badge badge-pill badge-secondary" id="20eOut">0,00 €</span></h3>
+                    </div>
+                </div>
+
+                <!-- ONE FORM ROW -->
+                <div class="form-row">
+                    <div class="col-md-6 mb-1">
+                        <div class="input-group md-1">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" style="width: 250px;">10€ Scheine</span>
+                                <input type="number" class="form-control" id="10eIn" placeholder="Anzahl"
+                                       required onkeyup="document.getElementById('10eOut').innerHTML = document.getElementById('10eIn').value*10 + ',00 €'">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-1">
+                        <h3><span class="badge badge-pill badge-secondary" id="10eOut">0,00 €</span></h3>
+                    </div>
+                </div>
+
+                <!-- ONE FORM ROW -->
+                <div class="form-row">
+                    <div class="col-md-6 mb-1">
+                        <div class="input-group md-1">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" style="width: 250px;">5€ Scheine</span>
+                                <input type="number" class="form-control" id="5eIn" placeholder="Anzahl"
+                                       required onkeyup="document.getElementById('5eOut').innerHTML = document.getElementById('5eIn').value*5 + ',00 €'">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-1">
+                        <h3><span class="badge badge-pill badge-secondary" id="5eOut">0,00 €</span></h3>
+                    </div>
+                </div>
+
+                <hr>
+
+
+            </div>
+
+
+            <!-- END OF CARD -->
+        </div>
+
+
+    </div>
+
+
+    <div class="d-flex flex-row-reverse">
+        <button type="submit" class="btn btn-primary btn-lg mx-auto">Submit</button>
+        <button type="button" onclick="window.location.href='https://thumbs.gfycat.com/SizzlingQuestionableAntipodesgreenparakeet-mobile.mp4'" class="btn btn-outline-secondary btn-lg mx-auto">Drucken</button>
+        <button type="button" onclick="window.location.href='https://thumbs.gfycat.com/SizzlingQuestionableAntipodesgreenparakeet-mobile.mp4'" class="btn btn-outline-danger btn-lg mx-auto">Reset</button>
+    </div>
+</form>
+
+
+<hr>
+</body>
+</html>
