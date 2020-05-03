@@ -31,7 +31,7 @@
             <span class="input-group-text" id="inputGroup-sizing-default">Datum</span>
         </div>
         <input type="text" class="form-control" placeholder="TT.MM.JJJJ"
-               aria-describedby="inputGroup-sizing-default" required>
+               aria-describedby="inputGroup-sizing-default" value="{{ today }}" required>
     </div>
     <div class="card border-dark mb-3 mx-auto" style="max-width: 90%;">
         <div class="card-header"><h5>Stückelung</h5></div>
@@ -45,13 +45,13 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text" style="width: 250px;">>=100€ Betrag</span>
                                 <input type="number" class="form-control" id="gt100In" placeholder="Betrag"
-                                       required
+                                       required value="{{ fields['gt100In'] }}"
                                        onkeyup="document.getElementById('gt100Out').innerHTML = document.getElementById('gt100In').value + ',00 €'">
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6 mb-3">
-                        <h3><span class="badge  badge-light" id="gt100Out">0,00 €</span></h3>
+                        <h3><span class="badge  badge-light" id="gt100Out">{{ fields['gt100Out'] }}</span></h3>
                     </div>
                 </div>
 
@@ -229,23 +229,72 @@
                         <div class="input-group md-1">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" style="width: 250px;">Barentnahmen</span>
-                                <input type="number" class="form-control" id="barentnahmen" placeholder="Euro"
+                                <input type="text" class="form-control" id="barentnahmen" placeholder="Euro"
                                        required>
                             </div>
+                            <small id="barentnahmenHelp" class="form-text text-muted">Bitte unbedingt mit ; voneinander
+                                trennen!</small>
+
                         </div>
                     </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+
+    <!-- START OF THIRD CARD -->
+
+    <div class="card border-dark mb-3 mx-auto" style="max-width: 90%;">
+        <div class="card-header"><h5>Trinkgelder</h5></div>
+        <div class="card-body text-dark">
+            <div class="container">
+
+
+                <!-- ONE FORM ROW -->
+                <div class="form-row">
+                    <div class="col-md-4 mb-3">
+                        <div class="form-group">
+                            <label for="exampleFormControlSelect1">Person</label>
+                            <select class="form-control" id="exampleFormControlSelect1">
+                                {% for item in ma_list %}
+                                    <option>{{ item }}</option>
+                                {% endfor %}
+
+                                <!--
+                                <option>Bitte wählen...</option>
+                                <option>Sandrina</option>
+                                <option>Eric</option>
+                                <option>Wer anders</option>
+                                <option>5</option>
+                                -->
+                            </select>
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-4 mb-3">
+                        <label for="exampleFormControlInput1">Stunden</label>
+                        <input type="number" class="form-control" id="exampleFormControlInput1"
+                               placeholder="Stunden">
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <label for="TG1">Trinkgeld</label>
+                        <h3><span class="badge  badge-dark" id="TG1">________ €</span></h3>
+
+                    </div>
+
                 </div>
 
                 <!-- ONE FORM ROW -->
                 <div class="form-row">
                     <div class="col-md-6 mb-3">
-                        <div class="input-group md-1">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" style="width: 250px;">Bareinlagen</span>
-                                <input type="number" class="form-control" id="bareinlagen" placeholder="Euro"
-                                       required>
-                            </div>
-                        </div>
+
+                        <!-- EMPTY -->
+
                     </div>
                 </div>
 
@@ -269,5 +318,7 @@
 
 
 <hr>
+
+<p align="center" style="color: #AAAAAA;">&copy; MVW</p>
 </body>
 </html>
