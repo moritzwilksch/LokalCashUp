@@ -28,7 +28,8 @@ DEFAULT_FIELDS = {
     '20ctOut': '0,00 €',
     '10ctIn': '10',
     '10ctOut': '0,00 €',
-    'geldInKasse': '______ €'
+    'geldInKasse': '______ €',
+    'ausgezaehlteBareinnahmen': '______ €',
 }
 TRINKGELD_TAGESANFANG = 250
 
@@ -36,13 +37,14 @@ TRINKGELD_TAGESANFANG = 250
 # METHODS
 def prep_convert_numeric_string(s: str) -> float:
     return float(s.lower()
-                 .strip()
                  .replace(',', '.')
                  .replace('€', '')
                  .replace("eur", '')
                  .replace('euro', '')
                  .replace('stk.', '')
                  .replace('stk', '')
+                 .replace('=', '')
+                 .strip()
                  )
 
 
@@ -69,6 +71,7 @@ def calculate_stueckelung(d: dict) -> dict:
 
 
 def sum_barentnahmen(s: str) -> float:
+    """Sums all values in a string of shape: value + value + value"""
     l = s.split('+')
     l = [prep_convert_numeric_string(elem) for elem in l]
     return sum(l)
@@ -100,7 +103,12 @@ def posttest():
         )}
     )
 
-    # TODO: Load calculated values
+    fields_to_be_shown.update({'ausgezaehlteBareinnahmen': convert_to_string_output(
+        (prep_convert_numeric_string(fields_to_be_shown.get('barentnahmenSumme', 0))
+         + prep_convert_numeric_string(fields_to_be_shown.get('geldInKasse', 0))
+         ) - TRINKGELD_TAGESANFANG
+    )})
+
     print(request.form)
     return render_template('input_form.html',
                            ma_list=MALIST,
