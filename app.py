@@ -8,25 +8,25 @@ app = Flask(__name__)
 MALIST = ['Bitte wählen...', 'Ayla', 'Carola', 'Erik', 'Hannah', 'Jule', 'Katja', 'Mekyas', 'Sandrina']
 TODAY = ".".join([str(getattr(datetime.date.today(), att)) for att in ['day', 'month', 'year']])
 DEFAULT_FIELDS = {
-    'gt100In': '1',
+    'gt100In': '',
     'gt100Out': '0,00 €',
-    '50eIn': '2',
+    '50eIn': '',
     '50eOut': '0,00 €',
-    '20eIn': '3',
+    '20eIn': '',
     '20eOut': '0,00 €',
-    '10eIn': '4',
+    '10eIn': '',
     '10eOut': '0,00 €',
-    '5eIn': '5',
+    '5eIn': '',
     '5eOut': '0,00 €',
-    '2eIn': '6',
+    '2eIn': '',
     '2eOut': '0,00 €',
-    '1eIn': '7',
+    '1eIn': '',
     '1eOut': '0,00 €',
-    '50ctIn': '8',
+    '50ctIn': '',
     '50ctOut': '0,00 €',
-    '20ctIn': '9',
+    '20ctIn': '',
     '20ctOut': '0,00 €',
-    '10ctIn': '10',
+    '10ctIn': '',
     '10ctOut': '0,00 €',
     'geldInKasse': '________ €',
     'ausgezaehlteBareinnahmen': '________ €',
@@ -186,4 +186,4 @@ def print_page():
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0')
+    app.run(host='0.0.0.0', port=1605)
