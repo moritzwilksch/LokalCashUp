@@ -1,6 +1,9 @@
 from flask import Flask, request, redirect
 from flask import render_template
 import datetime
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
+
 
 app = Flask(__name__)
 limiter = Limiter(
