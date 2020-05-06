@@ -25,12 +25,12 @@
 <h2 style="text-align: center">Abrechnung</h2>
 
 
-<form name="theForm">
+<form name="theForm" action="/calculate" method="post">
     <div class="input-group mb-3 mx-auto" style="max-width: 20%;">
         <div class="input-group-prepend">
             <span class="input-group-text" id="inputGroup-sizing-default">Datum</span>
         </div>
-        <input type="text" class="form-control" placeholder="TT.MM.JJJJ"
+        <input type="text" name="dateIn" class="form-control" placeholder="TT.MM.JJJJ"
                aria-describedby="inputGroup-sizing-default" value="{{ today }}" required>
     </div>
     <div class="card border-dark mb-3 mx-auto" style="max-width: 90%;">
@@ -44,7 +44,7 @@
                         <div class="input-group md-1">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" style="width: 250px;">>=100€ Betrag</span>
-                                <input type="number" class="form-control" id="gt100In" placeholder="Betrag"
+                                <input type="number" class="form-control" id="gt100In" name="gt100In" placeholder="Betrag"
                                        required value="{{ fields['gt100In'] }}"
                                        onkeyup="document.getElementById('gt100Out').innerHTML = document.getElementById('gt100In').value + ',00 €'">
                             </div>
@@ -61,14 +61,14 @@
                         <div class="input-group md-1">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" style="width: 250px;">50€ Scheine</span>
-                                <input type="number" class="form-control" id="50eIn" placeholder="Anzahl"
-                                       required
+                                <input type="number" class="form-control" id="50eIn" name="50eIn" placeholder="Anzahl"
+                                       required value="{{ fields['50eIn'] }}"
                                        onkeyup="document.getElementById('50eOut').innerHTML = document.getElementById('50eIn').value*50 + ',00 €'">
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6 mb-3">
-                        <h3><span class="badge  badge-light" id="50eOut">0,00 €</span></h3>
+                        <h3><span class="badge  badge-light" id="50eOut">{{ fields['50eOut'] }}</span></h3>
                     </div>
                 </div>
 
@@ -78,14 +78,14 @@
                         <div class="input-group md-1">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" style="width: 250px;">20€ Scheine</span>
-                                <input type="number" class="form-control" id="20eIn" placeholder="Anzahl"
-                                       required
+                                <input type="number" class="form-control" id="20eIn" name="20eIn" placeholder="Anzahl"
+                                       required value="{{ fields['20eIn'] }}"
                                        onkeyup="document.getElementById('20eOut').innerHTML = document.getElementById('20eIn').value*20 + ',00 €'">
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6 mb-3">
-                        <h3><span class="badge  badge-light" id="20eOut">0,00 €</span></h3>
+                        <h3><span class="badge  badge-light" id="20eOut">{{ fields['20eOut'] }}</span></h3>
                     </div>
                 </div>
 
@@ -95,14 +95,14 @@
                         <div class="input-group md-1">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" style="width: 250px;">10€ Scheine</span>
-                                <input type="number" class="form-control" id="10eIn" placeholder="Anzahl"
-                                       required
+                                <input type="number" class="form-control" id="10eIn" name="10eIn" placeholder="Anzahl"
+                                       required value="{{ fields['10eIn'] }}"
                                        onkeyup="document.getElementById('10eOut').innerHTML = document.getElementById('10eIn').value*10 + ',00 €'">
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6 mb-3">
-                        <h3><span class="badge  badge-light" id="10eOut">0,00 €</span></h3>
+                        <h3><span class="badge  badge-light" id="10eOut">{{ fields['10eOut'] }}</span></h3>
                     </div>
                 </div>
 
@@ -112,14 +112,14 @@
                         <div class="input-group md-1">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" style="width: 250px;">5€ Scheine</span>
-                                <input type="number" class="form-control" id="5eIn" placeholder="Anzahl"
-                                       required
+                                <input type="number" class="form-control" id="5eIn" name="5eIn" placeholder="Anzahl"
+                                       required value="{{ fields['5eIn'] }}"
                                        onkeyup="document.getElementById('5eOut').innerHTML = document.getElementById('5eIn').value*5 + ',00 €'">
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6 mb-3">
-                        <h3><span class="badge  badge-light" id="5eOut">0,00 €</span></h3>
+                        <h3><span class="badge  badge-light" id="5eOut">{{ fields['5eOut'] }}</span></h3>
                     </div>
                 </div>
 
@@ -129,14 +129,14 @@
                         <div class="input-group md-1">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" style="width: 250px;">2€ Münzen</span>
-                                <input type="number" class="form-control" id="2eIn" placeholder="Anzahl"
-                                       required
+                                <input type="number" class="form-control" id="2eIn" name="2eIn" placeholder="Anzahl"
+                                       required value="{{ fields['2eIn'] }}"
                                        onkeyup="document.getElementById('2eOut').innerHTML = document.getElementById('2eIn').value*2 + ',00 €'">
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6 mb-3">
-                        <h3><span class="badge  badge-light" id="2eOut">0,00 €</span></h3>
+                        <h3><span class="badge  badge-light" id="2eOut">{{ fields['2eOut'] }}</span></h3>
                     </div>
                 </div>
 
@@ -146,14 +146,14 @@
                         <div class="input-group md-1">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" style="width: 250px;">1€ Münzen</span>
-                                <input type="number" class="form-control" id="1eIn" placeholder="Anzahl"
-                                       required
+                                <input type="number" class="form-control" id="1eIn" name="1eIn" placeholder="Anzahl"
+                                       required value="{{ fields['1eIn'] }}"
                                        onkeyup="document.getElementById('1eOut').innerHTML = document.getElementById('1eIn').value*1 + ',00 €'">
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6 mb-3">
-                        <h3><span class="badge  badge-light" id="1eOut">0,00 €</span></h3>
+                        <h3><span class="badge  badge-light" id="1eOut">{{ fields['1eOut'] }}</span></h3>
                     </div>
                 </div>
 
@@ -163,14 +163,14 @@
                         <div class="input-group md-1">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" style="width: 250px;">50ct Münzen</span>
-                                <input type="number" class="form-control" id="50ctIn" placeholder="Anzahl"
-                                       required
+                                <input type="number" class="form-control" id="50ctIn" name="50ctIn" placeholder="Anzahl"
+                                       required value="{{ fields['50ctIn'] }}"
                                        onkeyup="document.getElementById('50ctOut').innerHTML = (document.getElementById('50ctIn').value*0.5 + ' €').replace('.', ',');">
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6 mb-3">
-                        <h3><span class="badge  badge-light" id="50ctOut">0,00 €</span></h3>
+                        <h3><span class="badge  badge-light" id="50ctOut">{{ fields['50ctOut'] }}</span></h3>
                     </div>
                 </div>
 
@@ -180,14 +180,14 @@
                         <div class="input-group md-1">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" style="width: 250px;">20ct Münzen</span>
-                                <input type="number" class="form-control" id="20ctIn" placeholder="Anzahl"
-                                       required
+                                <input type="number" class="form-control" id="20ctIn" name="20ctIn" placeholder="Anzahl"
+                                       required value="{{ fields['20ctIn'] }}"
                                        onkeyup="document.getElementById('20ctOut').innerHTML = (document.getElementById('20ctIn').value*0.2 + ' €').replace('.', ',');">
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6 mb-3">
-                        <h3><span class="badge  badge-light" id="20ctOut">0,00 €</span></h3>
+                        <h3><span class="badge  badge-light" id="20ctOut">{{ fields['20ctOut'] }}</span></h3>
                     </div>
                 </div>
 
@@ -197,19 +197,18 @@
                         <div class="input-group md-1">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" style="width: 250px;">10ct Münzen</span>
-                                <input type="number" class="form-control" id="10ctIn" placeholder="Anzahl"
-                                       required
+                                <input type="number" class="form-control" id="10ctIn" name="10ctIn" placeholder="Anzahl"
+                                       required value="{{ fields['10ctIn'] }}"
                                        onkeyup="document.getElementById('10ctOut').innerHTML = (document.getElementById('10ctIn').value*0.1 + ' €').replace('.', ',');">
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6 mb-3">
-                        <h3><span class="badge  badge-light" id="10ctOut">0,00 €</span></h3>
+                        <h3><span class="badge  badge-light" id="10ctOut">{{ fields['10ctOut'] }}</span></h3>
                     </div>
                 </div>
                 <hr>
-                <h4>Geld in der Kasse: <span class="badge  badge-dark">________ €</span></h4>
-
+                <h4>Geld in der Kasse: <span class="badge  badge-dark">{{ fields['geldInKasse']}}</span></h4>
                 <!-- END OF CARD -->
             </div>
         </div>
@@ -218,76 +217,230 @@
     <!-- START OF SECOND CARD -->
 
     <div class="card border-dark mb-3 mx-auto" style="max-width: 90%;">
-        <div class="card-header"><h5>Beträge</h5></div>
+        <div class="card-header"><h5>Entnahmen</h5></div>
         <div class="card-body text-dark">
             <div class="container">
 
 
                 <!-- ONE FORM ROW -->
                 <div class="form-row">
+                    <div class="col-md-10 mb-3">
+                        <div class="input-group md-1">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" style="width: 150px;">Barentnahmen</span>
+                                <input type="text" class="form-control" id="barentnahmen" name="barentnahmenList" style="width: 500px;"
+                                       placeholder="... + ... + ... + ..." required value="{{ fields['barentnahmenList'] }}">
+                            </div>
+                            <small id="barentnahmenHelp" class="form-text text-muted">Bitte unbedingt mit + Zeichen
+                                voneinander
+                                trennen!</small>
+                        </div>
+                    </div>
+                    <div class="col-md-2 mb-3">
+                        <h4><span class="badge  badge-dark">{{ fields['barentnahmenSumme'] }}</span></h4>
+                    </div>
+                </div>
+                <hr>
+                <h4>Ausgezählte Bareinnahmen: <span class="badge  badge-dark">________ €</span></h4>
+            </div>
+        </div>
+    </div>
+
+    <!-- START OF THIRD CARD -->
+
+    <div class="card border-dark mb-3 mx-auto" style="max-width: 90%;">
+        <div class="card-header"><h5>Z-Bon Zahlen</h5></div>
+        <div class="card-body text-dark">
+            <div class="container">
+
+
+                <div class="form-row">
                     <div class="col-md-6 mb-3">
                         <div class="input-group md-1">
                             <div class="input-group-prepend">
-                                <span class="input-group-text" style="width: 250px;">Barentnahmen</span>
-                                <input type="text" class="form-control" id="barentnahmen" placeholder="Euro"
-                                       required>
+                                <span class="input-group-text" style="width: 250px;">Bareinnahmen (Z-Bon)</span>
+                                <input type="number" class="form-control" id="bareinZb" name="bareinZb" placeholder="Euro"
+                                       required value="{{ fields['bareinZb'] }}">
                             </div>
-                            <small id="barentnahmenHelp" class="form-text text-muted">Bitte unbedingt mit ; voneinander
-                                trennen!</small>
-
                         </div>
                     </div>
                 </div>
 
+                <div class="form-row">
+                    <div class="col-md-6 mb-3">
+                        <div class="input-group md-1">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" style="width: 250px;">EC-Trinkgeld (Z-Bon)</span>
+                                <input type="number" class="form-control" id="ectrinkZb" name="ectrinkZb" placeholder="Euro"
+                                       required value="{{ fields['ectrinkZb'] }}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="col-md-6 mb-3">
+                        <div class="input-group md-1">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" style="width: 250px;">Gesamter Tagesumsatz (Z-Bon)</span>
+                                <input type="number" class="form-control" id="tagesumsatzZb" name="tagesumsatzZb" placeholder="Euro"
+                                       required value="{{ fields['tagesumsatzZb'] }}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <hr>
+                <h4>Trinkgeld Gesamt: <span class="badge  badge-dark">________ €</span></h4>
+                <h4>Geld in Umschlag: <span class="badge  badge-dark">________ €</span></h4>
 
             </div>
         </div>
     </div>
 
 
-    <!-- START OF THIRD CARD -->
+    <!-- START OF FOURTH CARD -->
 
     <div class="card border-dark mb-3 mx-auto" style="max-width: 90%;">
-        <div class="card-header"><h5>Trinkgelder</h5></div>
+        <div class="card-header"><h5>Aufteilung Trinkgelder</h5></div>
         <div class="card-body text-dark">
             <div class="container">
 
 
                 <!-- ONE FORM ROW -->
                 <div class="form-row">
-                    <div class="col-md-4 mb-3">
+                    <div class="col-md-4 mb-1">
                         <div class="form-group">
                             <label for="exampleFormControlSelect1">Person</label>
-                            <select class="form-control" id="exampleFormControlSelect1">
+                            <select class="form-control" id="exampleFormControlSelect1" name="p1">
                                 {% for item in ma_list %}
-                                    <option>{{ item }}</option>
+                                    {% if item == fields['p1'] %}
+                                        <option selected>{{ item }}</option>
+                                    {% else %}
+                                        <option>{{ item }}</option>
+                                    {% endif %}
                                 {% endfor %}
-
-                                <!--
-                                <option>Bitte wählen...</option>
-                                <option>Sandrina</option>
-                                <option>Eric</option>
-                                <option>Wer anders</option>
-                                <option>5</option>
-                                -->
                             </select>
                         </div>
                     </div>
 
-
-                    <div class="col-md-4 mb-3">
+                    <div class="col-md-4 mb-1">
                         <label for="exampleFormControlInput1">Stunden</label>
-                        <input type="number" class="form-control" id="exampleFormControlInput1"
-                               placeholder="Stunden">
+                        <input type="number" class="form-control" id="exampleFormControlInput1" name="s1"
+                               placeholder="Stunden" value="{{ fields['s1'] }}">
                     </div>
 
-                    <div class="col-md-4 mb-3">
+                    <div class="col-md-4 mb-1">
                         <label for="TG1">Trinkgeld</label>
                         <h3><span class="badge  badge-dark" id="TG1">________ €</span></h3>
+                    </div>
+                </div>
 
+                <!-- ONE FORM ROW -->
+                <div class="form-row">
+                    <div class="col-md-4 mb-1">
+                        <div class="form-group">
+                            <select class="form-control" id="exampleFormControlSelect1" name="p2">
+                                {% for item in ma_list %}
+                                    {% if item == fields['p2'] %}
+                                        <option selected>{{ item }}</option>
+                                    {% else %}
+                                        <option>{{ item }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
                     </div>
 
+                    <div class="col-md-4 mb-1">
+                        <input type="number" class="form-control" id="exampleFormControlInput1"
+                               placeholder="Stunden" name="s2" value="{{ fields['s2'] }}">
+                    </div>
+
+                    <div class="col-md-4 mb-1">
+                        <h3><span class="badge  badge-dark" id="TG1">________ €</span></h3>
+                    </div>
                 </div>
+
+                <!-- ONE FORM ROW -->
+                <div class="form-row">
+                    <div class="col-md-4 mb-1">
+                        <div class="form-group">
+                            <select class="form-control" id="exampleFormControlSelect1" name="p3">
+                                {% for item in ma_list %}
+                                    {% if item == fields['p3'] %}
+                                        <option selected>{{ item }}</option>
+                                    {% else %}
+                                        <option>{{ item }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 mb-1">
+                        <input type="number" class="form-control" id="exampleFormControlInput1"
+                               placeholder="Stunden" name="s3" value="{{ fields['s3'] }}">
+                    </div>
+
+                    <div class="col-md-4 mb-1">
+                        <h3><span class="badge  badge-dark" id="TG1">________ €</span></h3>
+                    </div>
+                </div>
+
+                <!-- ONE FORM ROW -->
+                <div class="form-row">
+                    <div class="col-md-4 mb-1">
+                        <div class="form-group">
+                            <select class="form-control" id="exampleFormControlSelect1" name="p4">
+                                {% for item in ma_list %}
+                                    {% if item == fields['p4'] %}
+                                        <option selected>{{ item }}</option>
+                                    {% else %}
+                                        <option>{{ item }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 mb-1">
+                        <input type="number" class="form-control" id="exampleFormControlInput1"
+                               placeholder="Stunden" name="s4" value="{{ fields['s4'] }}">
+                    </div>
+
+                    <div class="col-md-4 mb-1">
+                        <h3><span class="badge  badge-dark" id="TG1">________ €</span></h3>
+                    </div>
+                </div>
+
+                <!-- ONE FORM ROW -->
+                <div class="form-row">
+                    <div class="col-md-4 mb-1">
+                        <div class="form-group">
+                            <select class="form-control" id="exampleFormControlSelect1" name="p5">
+                                {% for item in ma_list %}
+                                    {% if item == fields['p5'] %}
+                                        <option selected>{{ item }}</option>
+                                    {% else %}
+                                        <option>{{ item }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 mb-1">
+                        <input type="number" class="form-control" id="exampleFormControlInput1"
+                               placeholder="Stunden" name="s5" value="{{ fields['s5'] }}">
+                    </div>
+
+                    <div class="col-md-4 mb-1">
+                        <h3><span class="badge  badge-dark" id="TG1">________ €</span></h3>
+                    </div>
+                </div>
+
 
                 <!-- ONE FORM ROW -->
                 <div class="form-row">
