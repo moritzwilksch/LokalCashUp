@@ -1,11 +1,11 @@
-from flask import Flask, request
+from flask import Flask, request, redirect
 from flask import render_template
 import datetime
 
 app = Flask(__name__)
 
 # CONSTANTS
-MALIST = ['Bitte wählen...', 'Sandrina', 'Eric', 'Nochwer']
+MALIST = ['Bitte wählen...', 'Ayla', 'Carola', 'Erik', 'Hannah', 'Jule', 'Katja', 'Mekyas', 'Sandrina']
 TODAY = ".".join([str(getattr(datetime.date.today(), att)) for att in ['day', 'month', 'year']])
 DEFAULT_FIELDS = {
     'gt100In': '1',
@@ -28,24 +28,34 @@ DEFAULT_FIELDS = {
     '20ctOut': '0,00 €',
     '10ctIn': '10',
     '10ctOut': '0,00 €',
-    'geldInKasse': '______ €',
-    'ausgezaehlteBareinnahmen': '______ €',
+    'geldInKasse': '________ €',
+    'ausgezaehlteBareinnahmen': '________ €',
+    'trinkgeldGesamt': '________ €',
+    'geldInUmschlag': '________ €',
+    'tg1': '________ €',
+    'tg2': '________ €',
+    'tg3': '________ €',
+    'tg4': '________ €',
+    'tg5': '________ €',
 }
 TRINKGELD_TAGESANFANG = 250
 
 
 # METHODS
 def prep_convert_numeric_string(s: str) -> float:
-    return float(s.lower()
-                 .replace(',', '.')
-                 .replace('€', '')
-                 .replace("eur", '')
-                 .replace('euro', '')
-                 .replace('stk.', '')
-                 .replace('stk', '')
-                 .replace('=', '')
-                 .strip()
-                 )
+    if s == '':
+        return 0
+    else:
+        return float(s.lower()
+                     .replace(',', '.')
+                     .replace('€', '')
+                     .replace("eur", '')
+                     .replace('euro', '')
+                     .replace('stk.', '')
+                     .replace('stk', '')
+                     .replace('=', '')
+                     .strip()
+                     )
 
 
 def convert_to_string_output(n: float) -> str:
@@ -77,6 +87,25 @@ def sum_barentnahmen(s: str) -> float:
     return sum(l)
 
 
+def calculate_tip_distribution(d: dict) -> dict:
+    """Calculates weighted distribution of tips from dict. Returns dict."""
+    hours = ['s1', 's2', 's3', 's4', 's5']
+    tgs = ['tg1', 'tg2', 'tg3', 'tg4', 'tg5']
+
+    hour_values = [prep_convert_numeric_string(d.get(x, 0)) for x in hours]
+    total_hours = sum(hour_values)
+    if total_hours == 0:
+        total_hours = 0.000001
+
+    for stunden, trinkgeld in zip(hours, tgs):
+        d.update({trinkgeld: convert_to_string_output(prep_convert_numeric_string(d.get(stunden, 0))
+                                                      / total_hours
+                                                      * prep_convert_numeric_string(d.get('trinkgeldGesamt', 0))
+                                                      )})
+
+    return d
+
+
 # ROUTES
 @app.route('/')
 def index():
@@ -87,13 +116,16 @@ def index():
 
 
 @app.route('/calculate', methods=['POST'])
-def posttest():
+def calculate():
     # load default values
     fields_to_be_shown = DEFAULT_FIELDS.copy()
+
     # load user input values
     fields_to_be_shown.update(dict(request.form))
+
     # Calculate light fields for stueckelung-card
     fields_to_be_shown = calculate_stueckelung(fields_to_be_shown)
+
     # Sum Barentnahmen List
     fields_to_be_shown.update({
         'barentnahmenSumme': "= " + convert_to_string_output(
@@ -103,17 +135,43 @@ def posttest():
         )}
     )
 
+    # Calculate ausgezaehlte Bareinnahmen
     fields_to_be_shown.update({'ausgezaehlteBareinnahmen': convert_to_string_output(
         (prep_convert_numeric_string(fields_to_be_shown.get('barentnahmenSumme', 0))
          + prep_convert_numeric_string(fields_to_be_shown.get('geldInKasse', 0))
          ) - TRINKGELD_TAGESANFANG
     )})
 
+    # Calculate Trinkgeld gesamt
+    fields_to_be_shown.update({
+        'trinkgeldGesamt': convert_to_string_output(
+            prep_convert_numeric_string(fields_to_be_shown.get('ausgezaehlteBareinnahmen', 0))
+            - prep_convert_numeric_string(fields_to_be_shown.get('bareinZb', 0))
+            + prep_convert_numeric_string(fields_to_be_shown.get('ectrinkZb', 0))
+        )
+    })
+
+    # Calculate Geld im Umschlag
+    fields_to_be_shown.update({
+        'geldInUmschlag': convert_to_string_output(
+            prep_convert_numeric_string(fields_to_be_shown.get('ausgezaehlteBareinnahmen', 0))
+            - prep_convert_numeric_string(fields_to_be_shown.get('ectrinkZb', 0))
+        )
+    })
+
+    # Calculate tip distribution
+    fields_to_be_shown = calculate_tip_distribution(fields_to_be_shown)
+
     print(request.form)
     return render_template('input_form.html',
                            ma_list=MALIST,
                            today=TODAY,
                            fields=fields_to_be_shown)
+
+
+@app.route('/resetFields')
+def reset_fields():
+    return redirect('/')
 
 
 if __name__ == '__main__':
