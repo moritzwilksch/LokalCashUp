@@ -32,14 +32,15 @@ DEFAULT_FIELDS = {
     'ausgezaehlteBareinnahmen': '________ €',
     'trinkgeldGesamt': '________ €',
     'geldInUmschlag': '________ €',
+    'barentnahmenSumme': '= ________ €',
     'tg1': '________ €',
     'tg2': '________ €',
     'tg3': '________ €',
     'tg4': '________ €',
     'tg5': '________ €',
 }
-TRINKGELD_TAGESANFANG = 250
-
+WECHSELGELD_TAGESANFANG = 250
+fields_to_be_shown = {}
 
 # METHODS
 def prep_convert_numeric_string(s: str) -> float:
@@ -118,6 +119,7 @@ def index():
 @app.route('/calculate', methods=['POST'])
 def calculate():
     # load default values
+    global fields_to_be_shown
     fields_to_be_shown = DEFAULT_FIELDS.copy()
 
     # load user input values
@@ -139,7 +141,7 @@ def calculate():
     fields_to_be_shown.update({'ausgezaehlteBareinnahmen': convert_to_string_output(
         (prep_convert_numeric_string(fields_to_be_shown.get('barentnahmenSumme', 0))
          + prep_convert_numeric_string(fields_to_be_shown.get('geldInKasse', 0))
-         ) - TRINKGELD_TAGESANFANG
+         ) - WECHSELGELD_TAGESANFANG
     )})
 
     # Calculate Trinkgeld gesamt
@@ -173,6 +175,15 @@ def calculate():
 def reset_fields():
     return redirect('/')
 
+@app.route('/printPage')
+def print_page():
+    return render_template('printable_output.html',
+                           today=TODAY,
+                           fields=fields_to_be_shown,
+                           wechselgeld=WECHSELGELD_TAGESANFANG
+                           )
+
+
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host='0.0.0.0')

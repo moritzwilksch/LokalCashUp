@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Ausdruck der Abrechnung</title>
+    <meta name="author" content="LOKAL">
+    <meta name="description" content="Abrechnungsapp">
+    <link rel="apple-touch-icon" href="/static/buy.png">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+</head>
+<body>
+
+<h1>Abrechnung vom {{ fields['dateIn'] }}</h1>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">Schein-/Münzart</th>
+        <th scope="col">Anzahl</th>
+        <th scope="col">Wert</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <th scope="row">>=100€</th>
+        <td>{{ fields['gt100In'] }} €</td>
+        <td>{{ fields['gt100Out'] }}</td>
+    </tr>
+    <tr>
+        <th scope="row">50€</th>
+        <td>{{ fields['50eIn'] }}</td>
+        <td>{{ fields['50eOut'] }}</td>
+    </tr>
+    <tr>
+        <th scope="row">20€</th>
+        <td>{{ fields['20eIn'] }}</td>
+        <td>{{ fields['20eOut'] }}</td>
+    </tr>
+
+    <tr>
+        <th scope="row">10€</th>
+        <td>{{ fields['10eIn'] }}</td>
+        <td>{{ fields['10eOut'] }}</td>
+    </tr>
+
+    <tr>
+        <th scope="row">5€</th>
+        <td>{{ fields['5eIn'] }}</td>
+        <td>{{ fields['5eOut'] }}</td>
+    </tr>
+    <tr>
+        <th scope="row">2€</th>
+        <td>{{ fields['2eIn'] }}</td>
+        <td>{{ fields['2eOut'] }}</td>
+    </tr>
+    <tr>
+        <th scope="row">1€</th>
+        <td>{{ fields['1eIn'] }}</td>
+        <td>{{ fields['1eOut'] }}</td>
+    </tr>
+    <tr>
+        <th scope="row">50ct</th>
+        <td>{{ fields['50ctIn'] }}</td>
+        <td>{{ fields['50ctOut'] }}</td>
+    </tr>
+    <tr>
+        <th scope="row">20ct</th>
+        <td>{{ fields['20ctIn'] }}</td>
+        <td>{{ fields['20ctOut'] }}</td>
+    </tr>
+    <tr>
+        <th scope="row">10ct</th>
+        <td>{{ fields['10ctIn'] }}</td>
+        <td>{{ fields['10ctOut'] }}</td>
+    </tr>
+    <tr>
+        <td>Bargeld in Kasse</td>
+        <td>{{ fields['geldInKasse'] }}</td>
+    </tr>
+    </tbody>
+</table>
+
+<hr>
+
+<table class="table">
+
+    <tr>
+        <td>Barentnahmen</td>
+        <td>{{ fields['barentnahmenList'] }}</td>
+    </tr>
+    <tr>
+        <td>Barentnahmen (Summe)</td>
+        <td>{{ fields['barentnahmenSumme'] }}</td>
+    </tr>
+    <tr>
+        <td>Wechselgeld vor Schichtbeginn</td>
+        <td>{{ wechselgeld }} €</td>
+    </tr>
+    <tr>
+        <td>Ausgezählte Bareinnahmen</td>
+        <td>{{ fields['ausgezaehlteBareinnahmen'] }}</td>
+    </tr>
+    <tr>
+        <td>Bareinnahmen (Z-Bon)</td>
+        <td>{{ fields['bareinZb'] }} €</td>
+    </tr>
+    <tr>
+        <td>EC-Trinkgeld (Z-Bon)</td>
+        <td>{{ fields['ectrinkZb'] }} €</td>
+    </tr>
+    <tr>
+        <td>Trinkgeld Gesamt</td>
+        <td>{{ fields['trinkgeldGesamt'] }}</td>
+    </tr>
+    <tr>
+        <td>Geld in Umschlag</td>
+        <td>{{ fields['geldInUmschlag'] }}</td>
+    </tr>
+    <tr>
+        <td>Tagesumsatz (Z-Bon)</td>
+        <td>{{ fields['tagesumsatzZb'] }}</td>
+    </tr>
+</table>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>Person</th>
+        <th>Stunden</th>
+        <th>Trinkgeld</th>
+    </tr>
+    </thead>
+    {% for t in [('p1', 's1', 'tg1'), ('p2', 's2', 'tg2'), ('p3', 's3', 'tg3'), ('p4', 's4', 'tg4'), ('p5', 's5', 'tg5')] %}
+        {% if fields[t[0]] != 'Bitte wählen...' %}
+            <tr>
+                <td>{{ fields[t[0]] }}</td>
+                <td>{{ fields[t[1]] }}</td>
+                <td>{{ fields[t[2]] }}</td>
+            </tr>
+        {% endif %}
+    {% endfor %}
+</table>
+
+
+</body>
