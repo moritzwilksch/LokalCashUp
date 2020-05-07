@@ -164,7 +164,7 @@ def calculate():
     # Calculate Geld im Umschlag
     fields_to_be_shown.update({
         'geldInUmschlag': convert_to_string_output(
-            prep_convert_numeric_string(fields_to_be_shown.get('ausgezaehlteBareinnahmen', 0))
+            prep_convert_numeric_string(fields_to_be_shown.get('bareinZb', 0))
             - prep_convert_numeric_string(fields_to_be_shown.get('ectrinkZb', 0))
         )
     })
