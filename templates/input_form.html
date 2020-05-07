@@ -259,7 +259,7 @@
                         <div class="input-group md-1">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" style="width: 250px;">Bareinnahmen (Z-Bon)</span>
-                                <input type="number" class="form-control" id="bareinZb" name="bareinZb" placeholder="Euro"
+                                <input type="text" pattern="^\d*(\{., \,}\d{0,2})?$" class="form-control" id="bareinZb" name="bareinZb" placeholder="Euro"
                                        required value="{{ fields['bareinZb'] }}">
                             </div>
                         </div>
@@ -271,7 +271,7 @@
                         <div class="input-group md-1">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" style="width: 250px;">EC-Trinkgeld (Z-Bon)</span>
-                                <input type="number" class="form-control" id="ectrinkZb" name="ectrinkZb" placeholder="Euro"
+                                <input type="text" pattern="^\d*(\{., \,}\d{0,2})?$" class="form-control" id="ectrinkZb" name="ectrinkZb" placeholder="Euro"
                                        required value="{{ fields['ectrinkZb'] }}">
                             </div>
                         </div>
@@ -283,7 +283,7 @@
                         <div class="input-group md-1">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" style="width: 250px;">Gesamter Tagesumsatz (Z-Bon)</span>
-                                <input type="number" class="form-control" id="tagesumsatzZb" name="tagesumsatzZb" placeholder="Euro"
+                                <input type="text" pattern="^\d*(\{., \,}\d{0,2})?$" class="form-control" id="tagesumsatzZb" name="tagesumsatzZb" placeholder="Euro"
                                        required value="{{ fields['tagesumsatzZb'] }}">
                             </div>
                         </div>
@@ -327,7 +327,7 @@
 
                     <div class="col-md-4 mb-1">
                         <label for="exampleFormControlInput1">Stunden</label>
-                        <input type="number" class="form-control" id="exampleFormControlInput1" name="s1"
+                        <input type="text" pattern="^\d*(\{., \,}\d{0,2})?$" class="form-control" id="exampleFormControlInput1" name="s1"
                                placeholder="Stunden" value="{{ fields['s1'] }}">
                     </div>
 
@@ -354,7 +354,7 @@
                     </div>
 
                     <div class="col-md-4 mb-1">
-                        <input type="number" class="form-control" id="exampleFormControlInput1"
+                        <input type="text" pattern="^\d*(\{., \,}\d{0,2})?$" class="form-control" id="exampleFormControlInput1"
                                placeholder="Stunden" name="s2" value="{{ fields['s2'] }}">
                     </div>
 
@@ -380,7 +380,7 @@
                     </div>
 
                     <div class="col-md-4 mb-1">
-                        <input type="number" class="form-control" id="exampleFormControlInput1"
+                        <input type="text" pattern="^\d*(\{., \,}\d{0,2})?$" class="form-control" id="exampleFormControlInput1"
                                placeholder="Stunden" name="s3" value="{{ fields['s3'] }}">
                     </div>
 
@@ -406,7 +406,7 @@
                     </div>
 
                     <div class="col-md-4 mb-1">
-                        <input type="number" class="form-control" id="exampleFormControlInput1"
+                        <input type="text" pattern="^\d*(\{., \,}\d{0,2})?$" class="form-control" id="exampleFormControlInput1"
                                placeholder="Stunden" name="s4" value="{{ fields['s4'] }}">
                     </div>
 
@@ -432,7 +432,7 @@
                     </div>
 
                     <div class="col-md-4 mb-1">
-                        <input type="number" class="form-control" id="exampleFormControlInput1"
+                        <input type="text" pattern="^\d*(\{., \,}\d{0,2})?$" class="form-control" id="exampleFormControlInput1"
                                placeholder="Stunden" name="s5" value="{{ fields['s5'] }}">
                     </div>
 
