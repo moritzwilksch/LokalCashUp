@@ -22,7 +22,7 @@
 
 <h1>Abrechnung vom {{ fields['dateIn'] }}</h1>
 
-<table class="table">
+<table class="table table-sm">
     <thead>
     <tr>
         <th scope="col">Schein-/Münzart</th>
@@ -92,7 +92,7 @@
 
 <hr>
 
-<table class="table">
+<table class="table table-sm">
 
     <tr>
         <td>Barentnahmen</td>
@@ -111,7 +111,7 @@
         <td>{{ fields['ausgezaehlteBareinnahmen'] }}</td>
     </tr>
     <tr>
-        <td>Bareinnahmen (Z-Bon)</td>
+        <td>Bargeld (Z-Bon)</td>
         <td>{{ fields['bareinZb'] }} €</td>
     </tr>
     <tr>
@@ -130,9 +130,21 @@
         <td>Tagesumsatz (Z-Bon)</td>
         <td>{{ fields['tagesumsatzZb'] }}</td>
     </tr>
+    <tr>
+        <td>Gutschein gekauft</td>
+        <td>{{ fields['gutschein_gekauft'] }}</td>
+    </tr>
+    <tr>
+        <td>mit Gutschein bezahlt</td>
+        <td>{{ fields['gutschein_bezahlt'] }}</td>
+    </tr>
+    <tr>
+        <td><b>Total</b></td>
+        <td>{{ fields['total'] }}</td>
+    </tr>
 </table>
 
-<table class="table">
+<table class="table table-sm">
     <thead>
     <tr>
         <th>Person</th>
@@ -151,5 +163,11 @@
     {% endfor %}
 </table>
 
+<br>
+<br>
+<br>
+<br>
+
+<p class="text-right">____________________________________</p>
 
 </body>

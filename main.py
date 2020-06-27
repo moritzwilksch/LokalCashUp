@@ -46,6 +46,7 @@ DEFAULT_FIELDS = {
     'tg3': '________ €',
     'tg4': '________ €',
     'tg5': '________ €',
+    'total': '________ €',
 }
 WECHSELGELD_TAGESANFANG = 250
 fields_to_be_shown = {}
@@ -80,7 +81,7 @@ def calculate_stueckelung(d: dict) -> dict:
     summe = 0
 
     for in_key, out_key, factor in zip(in_keys, out_keys, factors):
-        input_anzahl = prep_convert_numeric_string(d.get(in_key, 0))
+        input_anzahl = prep_convert_numeric_string(d.get(in_key, '0'))
         value = input_anzahl * factor
         summe += value
         d.update({out_key: convert_to_string_output(value)})
@@ -91,6 +92,10 @@ def calculate_stueckelung(d: dict) -> dict:
 
 def sum_barentnahmen(s: str) -> float:
     """Sums all values in a string of shape: value + value + value"""
+    try:
+        s = str(s)
+    except:
+        pass
     l = s.split('+')
     l = [prep_convert_numeric_string(elem) for elem in l]
     return sum(l)
@@ -101,15 +106,15 @@ def calculate_tip_distribution(d: dict) -> dict:
     hours = ['s1', 's2', 's3', 's4', 's5']
     tgs = ['tg1', 'tg2', 'tg3', 'tg4', 'tg5']
 
-    hour_values = [prep_convert_numeric_string(d.get(x, 0)) for x in hours]
+    hour_values = [prep_convert_numeric_string(d.get(x, '0')) for x in hours]
     total_hours = sum(hour_values)
     if total_hours == 0:
         total_hours = 0.000001
 
     for stunden, trinkgeld in zip(hours, tgs):
-        d.update({trinkgeld: convert_to_string_output(prep_convert_numeric_string(d.get(stunden, 0))
+        d.update({trinkgeld: convert_to_string_output(prep_convert_numeric_string(d.get(stunden, '0'))
                                                       / total_hours
-                                                      * prep_convert_numeric_string(d.get('trinkgeldGesamt', 0))
+                                                      * prep_convert_numeric_string(d.get('trinkgeldGesamt', '0'))
                                                       )})
 
     return d
@@ -140,33 +145,44 @@ def calculate():
     fields_to_be_shown.update({
         'barentnahmenSumme': "= " + convert_to_string_output(
             sum_barentnahmen(
-                fields_to_be_shown.get('barentnahmenList', 0)
+                fields_to_be_shown.get('barentnahmenList', '0')
             )
         )}
     )
 
     # Calculate ausgezaehlte Bareinnahmen
     fields_to_be_shown.update({'ausgezaehlteBareinnahmen': convert_to_string_output(
-        (prep_convert_numeric_string(fields_to_be_shown.get('barentnahmenSumme', 0))
-         + prep_convert_numeric_string(fields_to_be_shown.get('geldInKasse', 0))
+        (prep_convert_numeric_string(fields_to_be_shown.get('barentnahmenSumme', '0'))
+         + prep_convert_numeric_string(fields_to_be_shown.get('geldInKasse', '0'))
          ) - WECHSELGELD_TAGESANFANG
     )})
+
+
+    # Calculate Total
+    fields_to_be_shown.update({
+        'total': convert_to_string_output(
+            prep_convert_numeric_string(fields_to_be_shown.get('tagesumsatzZb', '0'))
+            - prep_convert_numeric_string(fields_to_be_shown.get('gutschein_bezahlt', '0'))
+            + prep_convert_numeric_string(fields_to_be_shown.get('gutschein_gekauft', '0'))
+        )
+    })
+
 
     # Calculate Trinkgeld gesamt
     fields_to_be_shown.update({
         'trinkgeldGesamt': convert_to_string_output(
-            prep_convert_numeric_string(fields_to_be_shown.get('ausgezaehlteBareinnahmen', 0))
-            - prep_convert_numeric_string(fields_to_be_shown.get('bareinZb', 0))
-            + prep_convert_numeric_string(fields_to_be_shown.get('ectrinkZb', 0))
+            prep_convert_numeric_string(fields_to_be_shown.get('ausgezaehlteBareinnahmen', '0'))
+            - prep_convert_numeric_string(fields_to_be_shown.get('bareinZb', '0'))
+            + prep_convert_numeric_string(fields_to_be_shown.get('ectrinkZb', '0'))
         )
     })
 
     # Calculate Geld im Umschlag
     fields_to_be_shown.update({
         'geldInUmschlag': convert_to_string_output(
-            prep_convert_numeric_string(fields_to_be_shown.get('bareinZb', 0))
-            - prep_convert_numeric_string(fields_to_be_shown.get('ectrinkZb', 0))
-            - prep_convert_numeric_string(fields_to_be_shown.get('barentnahmenSumme', 0))
+            prep_convert_numeric_string(fields_to_be_shown.get('bareinZb', '0'))
+            - prep_convert_numeric_string(fields_to_be_shown.get('ectrinkZb', '0'))
+            - prep_convert_numeric_string(fields_to_be_shown.get('barentnahmenSumme', '0'))
         )
     })
 

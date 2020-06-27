@@ -44,7 +44,8 @@
                         <div class="input-group md-1">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" style="width: 250px;">>=100€ Betrag</span>
-                                <input type="number" class="form-control" id="gt100In" name="gt100In" placeholder="Betrag"
+                                <input type="number" class="form-control" id="gt100In" name="gt100In"
+                                       placeholder="Betrag"
                                        required value="{{ fields['gt100In'] }}"
                                        onkeyup="document.getElementById('gt100Out').innerHTML = document.getElementById('gt100In').value + ',00 €'">
                             </div>
@@ -208,7 +209,7 @@
                     </div>
                 </div>
                 <hr>
-                <h4>Geld in der Kasse: <span class="badge  badge-dark">{{ fields['geldInKasse']}}</span></h4>
+                <h4>Geld in der Kasse: <span class="badge  badge-dark">{{ fields['geldInKasse'] }}</span></h4>
                 <!-- END OF CARD -->
             </div>
         </div>
@@ -228,8 +229,10 @@
                         <div class="input-group md-1">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" style="width: 150px;">Barentnahmen</span>
-                                <input type="text" class="form-control" id="barentnahmen" name="barentnahmenList" style="width: 500px;"
-                                       placeholder="... + ... + ... + ..." required value="{{ fields['barentnahmenList'] }}">
+                                <input type="text" class="form-control" id="barentnahmen" name="barentnahmenList"
+                                       style="width: 500px;"
+                                       placeholder="... + ... + ... + ..." required
+                                       value="{{ fields['barentnahmenList'] }}">
                             </div>
                             <small id="barentnahmenHelp" class="form-text text-muted">Bitte unbedingt mit + Zeichen
                                 voneinander
@@ -241,7 +244,8 @@
                     </div>
                 </div>
                 <hr>
-                <h4>Ausgezählte Bareinnahmen: <span class="badge  badge-dark">{{ fields['ausgezaehlteBareinnahmen'] }}</span></h4>
+                <h4>Ausgezählte Bareinnahmen: <span
+                        class="badge  badge-dark">{{ fields['ausgezaehlteBareinnahmen'] }}</span></h4>
             </div>
         </div>
     </div>
@@ -258,8 +262,9 @@
                     <div class="col-md-6 mb-3">
                         <div class="input-group md-1">
                             <div class="input-group-prepend">
-                                <span class="input-group-text" style="width: 250px;">Bareinnahmen (Z-Bon)</span>
-                                <input type="text" pattern="^\d*(\{., \,}\d{0,2})?$" class="form-control" id="bareinZb" name="bareinZb" placeholder="Euro"
+                                <span class="input-group-text" style="width: 250px;">Bargeld (Z-Bon)</span>
+                                <input type="text" pattern="^\d*(\{., \,}\d{0,2})?$" class="form-control" id="bareinZb"
+                                       name="bareinZb" placeholder="Euro"
                                        required value="{{ fields['bareinZb'] }}">
                             </div>
                         </div>
@@ -271,7 +276,8 @@
                         <div class="input-group md-1">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" style="width: 250px;">EC-Trinkgeld (Z-Bon)</span>
-                                <input type="text" pattern="^\d*(\{., \,}\d{0,2})?$" class="form-control" id="ectrinkZb" name="ectrinkZb" placeholder="Euro"
+                                <input type="text" pattern="^\d*(\{., \,}\d{0,2})?$" class="form-control" id="ectrinkZb"
+                                       name="ectrinkZb" placeholder="Euro"
                                        required value="{{ fields['ectrinkZb'] }}">
                             </div>
                         </div>
@@ -283,7 +289,8 @@
                         <div class="input-group md-1">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" style="width: 250px;">Gesamter Tagesumsatz (Z-Bon)</span>
-                                <input type="text" pattern="^\d*(\{., \,}\d{0,2})?$" class="form-control" id="tagesumsatzZb" name="tagesumsatzZb" placeholder="Euro"
+                                <input type="text" pattern="^\d*(\{., \,}\d{0,2})?$" class="form-control"
+                                       id="tagesumsatzZb" name="tagesumsatzZb" placeholder="Euro"
                                        required value="{{ fields['tagesumsatzZb'] }}">
                             </div>
                         </div>
@@ -291,6 +298,36 @@
                 </div>
 
 
+                <div class="form-row">
+                    <div class="col-md-6 mb-3">
+                        <div class="input-group md-1">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" style="width: 250px;">Auslagen (Gutschein gekauft)</span>
+                                <input type="text" pattern="^\d*(\{., \,}\d{0,2})?$" class="form-control"
+                                       id="gutschein_gekauft" name="gutschein_gekauft" placeholder="Euro"
+                                       required value="{{ fields['gutschein_gekauft'] }}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="form-row">
+                    <div class="col-md-6 mb-3">
+                        <div class="input-group md-1">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" style="width: 250px;">mit Gutschein bezahlt</span>
+                                <input type="text" pattern="^\d*(\{., \,}\d{0,2})?$" class="form-control"
+                                       id="gutschein_bezahlt" name="gutschein_bezahlt" placeholder="Euro"
+                                       required value="{{ fields['gutschein_bezahlt'] }}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <hr>
+                <h4>Total: <span class="badge  badge-dark">{{ fields['total'] }}</span></h4>
                 <hr>
                 <h4>Trinkgeld Gesamt: <span class="badge  badge-dark">{{ fields['trinkgeldGesamt'] }}</span></h4>
                 <h4>Geld in Umschlag: <span class="badge  badge-dark">{{ fields['geldInUmschlag'] }}</span></h4>
@@ -327,7 +364,8 @@
 
                     <div class="col-md-4 mb-1">
                         <label for="exampleFormControlInput1">Stunden</label>
-                        <input type="text" pattern="^\d*(\{., \,}\d{0,2})?$" class="form-control" id="exampleFormControlInput1" name="s1"
+                        <input type="text" pattern="^\d*(\{., \,}\d{0,2})?$" class="form-control"
+                               id="exampleFormControlInput1" name="s1"
                                placeholder="Stunden" value="{{ fields['s1'] }}">
                     </div>
 
@@ -354,7 +392,8 @@
                     </div>
 
                     <div class="col-md-4 mb-1">
-                        <input type="text" pattern="^\d*(\{., \,}\d{0,2})?$" class="form-control" id="exampleFormControlInput1"
+                        <input type="text" pattern="^\d*(\{., \,}\d{0,2})?$" class="form-control"
+                               id="exampleFormControlInput1"
                                placeholder="Stunden" name="s2" value="{{ fields['s2'] }}">
                     </div>
 
@@ -380,7 +419,8 @@
                     </div>
 
                     <div class="col-md-4 mb-1">
-                        <input type="text" pattern="^\d*(\{., \,}\d{0,2})?$" class="form-control" id="exampleFormControlInput1"
+                        <input type="text" pattern="^\d*(\{., \,}\d{0,2})?$" class="form-control"
+                               id="exampleFormControlInput1"
                                placeholder="Stunden" name="s3" value="{{ fields['s3'] }}">
                     </div>
 
@@ -406,7 +446,8 @@
                     </div>
 
                     <div class="col-md-4 mb-1">
-                        <input type="text" pattern="^\d*(\{., \,}\d{0,2})?$" class="form-control" id="exampleFormControlInput1"
+                        <input type="text" pattern="^\d*(\{., \,}\d{0,2})?$" class="form-control"
+                               id="exampleFormControlInput1"
                                placeholder="Stunden" name="s4" value="{{ fields['s4'] }}">
                     </div>
 
@@ -432,7 +473,8 @@
                     </div>
 
                     <div class="col-md-4 mb-1">
-                        <input type="text" pattern="^\d*(\{., \,}\d{0,2})?$" class="form-control" id="exampleFormControlInput1"
+                        <input type="text" pattern="^\d*(\{., \,}\d{0,2})?$" class="form-control"
+                               id="exampleFormControlInput1"
                                placeholder="Stunden" name="s5" value="{{ fields['s5'] }}">
                     </div>
 
@@ -440,8 +482,6 @@
                         <h3><span class="badge  badge-dark" id="TG5">{{ fields['tg5'] }}</span></h3>
                     </div>
                 </div>
-
-
 
 
             </div>
