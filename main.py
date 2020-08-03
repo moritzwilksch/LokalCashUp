@@ -13,7 +13,7 @@ limiter = Limiter(
 )
 
 # CONSTANTS
-MALIST = ['Bitte wählen...', 'Ayla', 'Carola', 'Erik', 'Hannah', 'Jule', 'Katja', 'Mekyas', 'Sandrina']
+MALIST = ['Bitte wählen...', 'Sandrina', 'Jule', 'Carola', 'Anke', 'Ayla', 'Josie', 'Evelin', 'Aushilfe']
 TODAY = ".".join([str(getattr(datetime.date.today(), att)) for att in ['day', 'month', 'year']])
 DEFAULT_FIELDS = {
     'gt100In': '',
@@ -163,7 +163,6 @@ def calculate():
         'total': convert_to_string_output(
             prep_convert_numeric_string(fields_to_be_shown.get('tagesumsatzZb', '0'))
             - prep_convert_numeric_string(fields_to_be_shown.get('gutschein_bezahlt', '0'))
-            + prep_convert_numeric_string(fields_to_be_shown.get('gutschein_gekauft', '0'))
         )
     })
 
