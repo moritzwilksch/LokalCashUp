@@ -13,7 +13,7 @@ limiter = Limiter(
 )
 
 # CONSTANTS
-MALIST = ['Bitte wählen...', 'Sandrina', 'Jule', 'Carola', 'Anke', 'Ayla', 'Josie', 'Evelin', 'Aushilfe']
+MALIST = ['Bitte wählen...', 'Susanne', 'Jule', 'Carallalola', 'Anke', 'Katia', 'Ayla', 'Josie', 'Evelin', 'Philipp', 'Lene', 'Aushilfe']
 TODAY = ".".join([str(getattr(datetime.date.today(), att)) for att in ['day', 'month', 'year']])
 DEFAULT_FIELDS = {
     'gt100In': '',
