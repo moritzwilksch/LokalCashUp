@@ -48,7 +48,7 @@ DEFAULT_FIELDS = {
     'tg5': '________ €',
     'total': '________ €',
 }
-WECHSELGELD_TAGESANFANG = 250
+WECHSELGELD_TAGESANFANG = 100
 fields_to_be_shown = {}
 
 # METHODS
