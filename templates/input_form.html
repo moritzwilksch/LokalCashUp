@@ -470,6 +470,62 @@
                         <h3><span class="badge  badge-dark" id="TG5">{{ fields['tg5'] }}</span></h3>
                     </div>
                 </div>
+                
+                
+                <!-- ONE FORM ROW -->
+                <div class="form-row">
+                    <div class="col-md-4 mb-1">
+                        <div class="form-group">
+                            <select class="form-control" id="exampleFormControlSelect1" name="p6">
+                                {% for item in ma_list %}
+                                    {% if item == fields['p6'] %}
+                                        <option selected>{{ item }}</option>
+                                    {% else %}
+                                        <option>{{ item }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 mb-1">
+                        <input type="text" pattern="^\d*(\{., \,}\d{0,2})?$" class="form-control"
+                               id="exampleFormControlInput1"
+                               placeholder="Stunden" name="s6" value="{{ fields['s6'] }}">
+                    </div>
+
+                    <div class="col-md-4 mb-1">
+                        <h3><span class="badge  badge-dark" id="TG6">{{ fields['tg6'] }}</span></h3>
+                    </div>
+                </div>
+                
+                
+                <!-- ONE FORM ROW -->
+                <div class="form-row">
+                    <div class="col-md-4 mb-1">
+                        <div class="form-group">
+                            <select class="form-control" id="exampleFormControlSelect1" name="p7">
+                                {% for item in ma_list %}
+                                    {% if item == fields['p7'] %}
+                                        <option selected>{{ item }}</option>
+                                    {% else %}
+                                        <option>{{ item }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 mb-1">
+                        <input type="text" pattern="^\d*(\{., \,}\d{0,2})?$" class="form-control"
+                               id="exampleFormControlInput1"
+                               placeholder="Stunden" name="s7" value="{{ fields['s7'] }}">
+                    </div>
+
+                    <div class="col-md-4 mb-1">
+                        <h3><span class="badge  badge-dark" id="TG7">{{ fields['tg7'] }}</span></h3>
+                    </div>
+                </div>
 
 
             </div>

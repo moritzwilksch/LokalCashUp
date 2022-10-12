@@ -1,4 +1,4 @@
-Flask==1.1.2
-Flask-Limiter==1.2.1
-Jinja2==2.11.1
+Flask
+Flask-Limiter
+Jinja2
 
