@@ -19,11 +19,14 @@ MALIST = [
     "Anke",
     "Katia",
     "Evelin",
-    "Josua",
     "Lars",
     "Anna-Lena",
     "Felix",
     "Carolin",
+    "Philip",
+    "Saphira",
+    "Alina",
+    "Gordon",
     "Aushilfe",
 ]
 TODAY = ".".join(
