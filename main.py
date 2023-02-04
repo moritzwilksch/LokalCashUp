@@ -1,13 +1,8 @@
 import datetime
 
 from flask import Flask, redirect, render_template, request
-from flask_limiter import Limiter
-from flask_limiter.util import get_remote_address
 
 app = Flask(__name__)
-limiter = Limiter(
-    app, key_func=get_remote_address, default_limits=["200 per day", "50 per hour"]
-)
 
 
 # CONSTANTS
@@ -27,6 +22,7 @@ MALIST = [
     "Saphira",
     "Alina",
     "Gordon",
+    "Bennet",
     "Aushilfe",
 ]
 TODAY = ".".join(
