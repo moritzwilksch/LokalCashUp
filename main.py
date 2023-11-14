@@ -17,7 +17,7 @@ MALIST = [
     "Philip",
     "Saphira",
     "Alina",
-    "Michele",
+    "Rebecca",
     "Marc",
     "Aushilfe",
 ]
