@@ -8,17 +8,16 @@ app = Flask(__name__)
 # CONSTANTS
 MALIST = [
     "Bitte wählen...",
-    "Susanne",
     "Jule",
     "Carallalola",
     "Anke",
     "Katia",
-    "Philip",
     "Alina",
-    "Michael",
     "Annalena",
     "Endric",
     "Isabelle",
+    "Max",
+    "Leon",
     "Aushilfe",
 ]
 TODAY = ".".join(
