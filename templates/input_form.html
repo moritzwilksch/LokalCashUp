@@ -11,10 +11,20 @@
     <script src="https://unpkg.com/htmx.org@2.0.4"></script>
 </head>
 <body class="min-h-screen bg-slate-100 text-slate-900">
-<main class="mx-auto w-full max-w-6xl px-4 py-6 md:px-6">
+<main class="relative mx-auto w-full max-w-6xl px-4 py-6 md:px-6">
+    <button type="button" id="open-settings"
+            class="absolute right-4 top-4 inline-flex h-10 w-10 items-center justify-center rounded-xl border border-slate-300 bg-white text-slate-700 shadow-sm transition hover:bg-slate-100 md:right-6"
+            aria-label="Einstellungen öffnen">
+        <svg viewBox="0 0 24 24" class="h-5 w-5 fill-none stroke-current" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M19.4 15a1.7 1.7 0 0 0 .34 1.86l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.86-.34 1.7 1.7 0 0 0-1.05 1.56V21a2 2 0 1 1-4 0v-.09a1.7 1.7 0 0 0-1.05-1.56 1.7 1.7 0 0 0-1.86.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-1.56-1.05H3a2 2 0 1 1 0-4h.04A1.7 1.7 0 0 0 4.6 8.9a1.7 1.7 0 0 0-.34-1.86l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.7 1.7 0 0 0 1.86.34h0A1.7 1.7 0 0 0 10 2.99V3a2 2 0 1 1 4 0v-.01a1.7 1.7 0 0 0 1.05 1.56h0a1.7 1.7 0 0 0 1.86-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.7 1.7 0 0 0-.34 1.86v0A1.7 1.7 0 0 0 20.96 10H21a2 2 0 1 1 0 4h-.04A1.7 1.7 0 0 0 19.4 15z"></path>
+        </svg>
+    </button>
+
     <h1 class="mb-6 text-center text-3xl font-semibold tracking-tight">Abrechnung</h1>
 
     <form id="cashup-form" name="theForm" action="/calculate" method="post" class="space-y-6">
+        <input type="hidden" id="employee_list" name="employee_list" value="{{ employee_list }}">
         <section class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm md:p-6">
             <label for="datum" class="mb-2 block text-base font-medium text-slate-700">Datum</label>
             <input type="text" id="datum" name="datum" placeholder="TT.MM.JJJJ" value="{{ form.datum }}" required
@@ -139,7 +149,7 @@
         </section>
 
         <section class="grid gap-3 pb-2 md:grid-cols-3">
-            <button type="button" onclick="window.location.href='/resetFields'"
+            <button type="button" onclick="resetEmployeeListAndRedirect()"
                     class="inline-flex h-14 items-center justify-center rounded-xl border border-rose-300 bg-rose-50 px-6 text-lg font-semibold text-rose-700 shadow-sm transition hover:bg-rose-100 active:scale-[0.99]">
                 Reset
             </button>
@@ -156,5 +166,164 @@
 
     <p class="pt-4 text-center text-sm text-slate-400">&copy; MVW</p>
 </main>
+<div id="settings-modal" class="fixed inset-0 z-20 hidden items-center justify-center bg-slate-900/45 p-4">
+    <div class="w-full max-w-lg rounded-2xl border border-slate-200 bg-white p-5 shadow-xl">
+        <h2 class="mb-2 text-xl font-semibold">Mitarbeiterliste</h2>
+        <p class="mb-3 text-sm text-slate-600">Ein Name pro Zeile. Diese Liste bestimmt die Auswahl in allen Person-Dropdowns.</p>
+        <label for="employee_list_editor" class="sr-only">Mitarbeiterliste</label>
+        <textarea id="employee_list_editor" rows="12"
+                  class="w-full rounded-xl border border-slate-300 px-3 py-2 text-base outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100"></textarea>
+        <div class="mt-4 flex justify-end gap-3">
+            <button type="button" id="cancel-settings"
+                    class="inline-flex h-11 items-center justify-center rounded-xl border border-slate-300 bg-white px-5 text-base font-semibold text-slate-700 transition hover:bg-slate-100">
+                Abbrechen
+            </button>
+            <button type="button" id="save-settings"
+                    class="inline-flex h-11 items-center justify-center rounded-xl bg-emerald-600 px-5 text-base font-semibold text-white transition hover:bg-emerald-700">
+                Speichern
+            </button>
+        </div>
+    </div>
+</div>
+<script>
+    const EMPLOYEE_LIST_KEY = "cashup_employee_list";
+
+    function normalizeEmployeeName(name) {
+        const normalized = (name || "").trim();
+        if (!normalized || normalized.length > 40) {
+            return null;
+        }
+        return normalized;
+    }
+
+    function dedupeEmployees(names) {
+        const deduped = [];
+        const seen = new Set();
+        for (const name of names) {
+            const normalized = normalizeEmployeeName(name);
+            if (!normalized) continue;
+            const key = normalized.toLocaleLowerCase();
+            if (seen.has(key)) continue;
+            seen.add(key);
+            deduped.push(normalized);
+        }
+        return deduped;
+    }
+
+    function getSelectElements() {
+        return Array.from(document.querySelectorAll('select[id^="trinkgeld_person_"]'));
+    }
+
+    function getDefaultOptionsFromDom() {
+        const firstSelect = getSelectElements()[0];
+        if (!firstSelect) return [];
+        return Array.from(firstSelect.options).map((option) => option.textContent || "");
+    }
+
+    function parseListText(text) {
+        return dedupeEmployees((text || "").split(/\r?\n/));
+    }
+
+    function getHiddenEmployeeList() {
+        const hidden = document.getElementById("employee_list");
+        if (!hidden || !hidden.value) return [];
+        return parseListText(hidden.value);
+    }
+
+    function getStoredEmployeeList() {
+        const raw = localStorage.getItem(EMPLOYEE_LIST_KEY);
+        if (!raw) return [];
+        try {
+            const parsed = JSON.parse(raw);
+            return Array.isArray(parsed) ? dedupeEmployees(parsed) : [];
+        } catch {
+            return [];
+        }
+    }
+
+    function setHiddenEmployeeList(names) {
+        const hidden = document.getElementById("employee_list");
+        if (hidden) hidden.value = names.join("\n");
+    }
+
+    function setEditorList(names) {
+        const editor = document.getElementById("employee_list_editor");
+        if (editor) editor.value = names.join("\n");
+    }
+
+    function rebuildSelectOptions(options) {
+        for (const select of getSelectElements()) {
+            const selectedValue = select.value;
+            select.innerHTML = "";
+            for (const optionLabel of options) {
+                const option = document.createElement("option");
+                option.textContent = optionLabel;
+                option.value = optionLabel;
+                if (optionLabel === selectedValue) {
+                    option.selected = true;
+                }
+                select.appendChild(option);
+            }
+            if (options.length > 0 && !options.includes(selectedValue)) {
+                select.value = options[0];
+            }
+        }
+    }
+
+    function applyEmployeeList(names, defaultOptions) {
+        const resolved = dedupeEmployees(names);
+        const options = resolved.length > 0 ? resolved : defaultOptions;
+        rebuildSelectOptions(options);
+        setHiddenEmployeeList(options);
+        setEditorList(options);
+        localStorage.setItem(EMPLOYEE_LIST_KEY, JSON.stringify(options));
+    }
+
+    function openSettings() {
+        const modal = document.getElementById("settings-modal");
+        if (modal) modal.classList.remove("hidden");
+    }
+
+    function closeSettings() {
+        const modal = document.getElementById("settings-modal");
+        if (modal) modal.classList.add("hidden");
+    }
+
+    function saveSettings(defaultOptions) {
+        const editor = document.getElementById("employee_list_editor");
+        const names = parseListText(editor ? editor.value : "");
+        applyEmployeeList(names, defaultOptions);
+        closeSettings();
+    }
+
+    function resetEmployeeListAndRedirect() {
+        localStorage.removeItem(EMPLOYEE_LIST_KEY);
+        const hidden = document.getElementById("employee_list");
+        if (hidden) hidden.value = "";
+        window.location.href = "/resetFields";
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const defaultOptions = dedupeEmployees(getDefaultOptionsFromDom());
+        const initial = getStoredEmployeeList().length > 0
+            ? getStoredEmployeeList()
+            : getHiddenEmployeeList();
+        applyEmployeeList(initial, defaultOptions);
+
+        const openButton = document.getElementById("open-settings");
+        const cancelButton = document.getElementById("cancel-settings");
+        const saveButton = document.getElementById("save-settings");
+
+        if (openButton) {
+            openButton.addEventListener("click", openSettings);
+        }
+        if (cancelButton) {
+            cancelButton.addEventListener("click", closeSettings);
+        }
+        if (saveButton) {
+            saveButton.addEventListener("click", () => saveSettings(defaultOptions));
+        }
+    });
+</script>
 </body>
 </html>

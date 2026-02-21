@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from datetime import date
-
 from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
@@ -45,14 +44,52 @@ def denomination_rows(form: CashUpForm) -> list[dict[str, str]]:
     return rows
 
 
-def render_form(request: Request, form: CashUpForm):
+def _normalize_employee_name(name: str) -> str | None:
+    normalized = name.strip()
+    if not normalized:
+        return None
+    if len(normalized) > 40:
+        return None
+    return normalized
+
+
+def parse_employee_list(raw_value: object) -> list[str]:
+    text = str(raw_value) if raw_value is not None else ""
+    parsed: list[str] = []
+    seen: set[str] = set()
+    for line in text.splitlines():
+        normalized = _normalize_employee_name(line)
+        if normalized is None:
+            continue
+        key = normalized.casefold()
+        if key in seen:
+            continue
+        seen.add(key)
+        parsed.append(normalized)
+    return parsed
+
+
+def default_employee_options() -> list[str]:
+    return parse_employee_list("\n".join(config.employees))
+
+
+def resolve_employee_options(raw_value: object) -> list[str]:
+    parsed = parse_employee_list(raw_value)
+    if parsed:
+        return parsed
+    return default_employee_options()
+
+
+def render_form(request: Request, form: CashUpForm, employee_list_raw: object | None = None):
+    employee_options = resolve_employee_options(employee_list_raw)
     return templates.TemplateResponse(
         "input_form.html",
         {
             "request": request,
-            "ma_list": config.employees,
+            "ma_list": employee_options,
             "form": form,
             "denomination_rows": denomination_rows(form),
+            "employee_list": "\n".join(employee_options),
         },
     )
 
@@ -72,7 +109,7 @@ async def calculate(request: Request):
     calculated = apply_calculation_pipeline(form, config)
     last_form = calculated
 
-    return render_form(request, calculated)
+    return render_form(request, calculated, employee_list_raw=raw_form.get("employee_list"))
 
 
 @app.post("/preview/denomination/{index}", response_class=HTMLResponse)
