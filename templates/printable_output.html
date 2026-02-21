@@ -11,18 +11,19 @@
     <style>
         @page {
             size: A4;
-            margin: 12mm;
+            margin: 8mm;
         }
 
         body {
             font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            line-height: 1.2;
         }
     </style>
 </head>
-<body class="px-3 py-3 text-black">
-<main class="mx-auto w-full max-w-5xl space-y-3">
-    <section class="pb-1">
-        <h1 class="text-2xl font-bold tracking-tight">Abrechnung vom {{ form.datum }}</h1>
+<body class="px-2 py-2 text-black">
+<main class="mx-auto w-full max-w-5xl space-y-2">
+    <section class="pb-0.5">
+        <h1 class="text-xl font-bold tracking-tight">Abrechnung vom {{ form.datum }}</h1>
     </section>
 
     <section class="overflow-hidden border border-black">
@@ -30,20 +31,20 @@
             <table class="min-w-full text-left text-sm">
                 <thead>
                 <tr>
-                    <th class="border-b border-black px-2 py-1 font-bold">Schein-/Münzart</th>
-                    <th class="border-b border-black px-2 py-1 font-bold">Anzahl</th>
-                    <th class="border-b border-black px-2 py-1 font-bold">Wert</th>
+                    <th class="border-b border-black px-2 py-0.5 font-bold">Schein-/Münzart</th>
+                    <th class="border-b border-black px-2 py-0.5 font-bold">Anzahl</th>
+                    <th class="border-b border-black px-2 py-0.5 font-bold">Wert</th>
                 </tr>
                 </thead>
                 <tbody>
                 {% for row in denomination_rows %}
                     <tr>
-                        <td class="border-t border-black px-2 py-1">{{ row.label }}</td>
-                        <td class="border-t border-black px-2 py-1">{{ row.quantity }}</td>
-                        <td class="border-t border-black px-2 py-1">{{ row.amount }}</td>
+                        <td class="border-t border-black px-2 py-0.5">{{ row.label }}</td>
+                        <td class="border-t border-black px-2 py-0.5">{{ row.quantity }}</td>
+                        <td class="border-t border-black px-2 py-0.5">{{ row.amount }}</td>
                     </tr>
                 {% endfor %}
-                <tr><td class="border-t border-black px-2 py-1 font-bold">Bargeld in Kasse</td><td class="border-t border-black px-2 py-1 font-bold" colspan="2">{{ form.outputs.geld_in_kasse }}</td></tr>
+                <tr><td class="border-t border-black px-2 py-0.5 font-bold">Bargeld in Kasse</td><td class="border-t border-black px-2 py-0.5 font-bold" colspan="2">{{ form.outputs.geld_in_kasse }}</td></tr>
                 </tbody>
             </table>
         </div>
@@ -53,17 +54,17 @@
         <div class="overflow-x-auto">
             <table class="min-w-full text-left text-sm">
                 <tbody>
-                <tr><td class="border-t border-black px-2 py-1">Barentnahmen</td><td class="border-t border-black px-2 py-1">{{ form.barentnahmen_liste }}</td></tr>
-                <tr><td class="border-t border-black px-2 py-1">Barentnahmen (Summe)</td><td class="border-t border-black px-2 py-1">{{ form.outputs.barentnahmen_summe }}</td></tr>
-                <tr><td class="border-t border-black px-2 py-1">Wechselgeld vor Schichtbeginn</td><td class="border-t border-black px-2 py-1">{{ wechselgeld_tagesanfang }} €</td></tr>
-                <tr><td class="border-t border-black px-2 py-1">Ausgezählte Bareinnahmen</td><td class="border-t border-black px-2 py-1">{{ form.outputs.ausgezaehlte_bareinnahmen }}</td></tr>
-                <tr><td class="border-t border-black px-2 py-1">Bargeld (Z-Bon)</td><td class="border-t border-black px-2 py-1">{{ form.zbon.bargeld_zbon }} €</td></tr>
-                <tr><td class="border-t border-black px-2 py-1">EC-Trinkgeld (Z-Bon)</td><td class="border-t border-black px-2 py-1">{{ form.zbon.ec_trinkgeld_zbon }} €</td></tr>
-                <tr><td class="border-t border-black px-2 py-1">Trinkgeld Gesamt</td><td class="border-t border-black px-2 py-1">{{ form.outputs.trinkgeld_gesamt }}</td></tr>
-                <tr><td class="border-t border-black px-2 py-1">Geld in Umschlag</td><td class="border-t border-black px-2 py-1">{{ form.outputs.geld_in_umschlag }}</td></tr>
-                <tr><td class="border-t border-black px-2 py-1">Tagesumsatz (Z-Bon)</td><td class="border-t border-black px-2 py-1">{{ form.zbon.tagesumsatz_zbon }}</td></tr>
-                <tr><td class="border-t border-black px-2 py-1">mit Gutschein bezahlt</td><td class="border-t border-black px-2 py-1">{{ form.zbon.mit_gutschein_bezahlt }}</td></tr>
-                <tr><td class="border-t border-black px-2 py-1 font-bold">Total</td><td class="border-t border-black px-2 py-1 font-bold">{{ form.outputs.total }}</td></tr>
+                <tr><td class="border-t border-black px-2 py-0.5">Barentnahmen</td><td class="border-t border-black px-2 py-0.5">{{ form.barentnahmen_liste }}</td></tr>
+                <tr><td class="border-t border-black px-2 py-0.5">Barentnahmen (Summe)</td><td class="border-t border-black px-2 py-0.5">{{ form.outputs.barentnahmen_summe }}</td></tr>
+                <tr><td class="border-t border-black px-2 py-0.5">Wechselgeld vor Schichtbeginn</td><td class="border-t border-black px-2 py-0.5">{{ wechselgeld_tagesanfang }} €</td></tr>
+                <tr><td class="border-t border-black px-2 py-0.5">Ausgezählte Bareinnahmen</td><td class="border-t border-black px-2 py-0.5">{{ form.outputs.ausgezaehlte_bareinnahmen }}</td></tr>
+                <tr><td class="border-t border-black px-2 py-0.5">Bargeld (Z-Bon)</td><td class="border-t border-black px-2 py-0.5">{{ form.zbon.bargeld_zbon }} €</td></tr>
+                <tr><td class="border-t border-black px-2 py-0.5">EC-Trinkgeld (Z-Bon)</td><td class="border-t border-black px-2 py-0.5">{{ form.zbon.ec_trinkgeld_zbon }} €</td></tr>
+                <tr><td class="border-t border-black px-2 py-0.5">Trinkgeld Gesamt</td><td class="border-t border-black px-2 py-0.5">{{ form.outputs.trinkgeld_gesamt }}</td></tr>
+                <tr><td class="border-t border-black px-2 py-0.5">Geld in Umschlag</td><td class="border-t border-black px-2 py-0.5">{{ form.outputs.geld_in_umschlag }}</td></tr>
+                <tr><td class="border-t border-black px-2 py-0.5">Tagesumsatz (Z-Bon)</td><td class="border-t border-black px-2 py-0.5">{{ form.zbon.tagesumsatz_zbon }}</td></tr>
+                <tr><td class="border-t border-black px-2 py-0.5">mit Gutschein bezahlt</td><td class="border-t border-black px-2 py-0.5">{{ form.zbon.mit_gutschein_bezahlt }}</td></tr>
+                <tr><td class="border-t border-black px-2 py-0.5 font-bold">Total</td><td class="border-t border-black px-2 py-0.5 font-bold">{{ form.outputs.total }}</td></tr>
                 </tbody>
             </table>
         </div>
@@ -74,18 +75,18 @@
             <table class="min-w-full text-left text-sm">
                 <thead>
                 <tr>
-                    <th class="border-b border-black px-2 py-1 font-bold">Person</th>
-                    <th class="border-b border-black px-2 py-1 font-bold">Stunden</th>
-                    <th class="border-b border-black px-2 py-1 font-bold">Trinkgeld</th>
+                    <th class="border-b border-black px-2 py-0.5 font-bold">Person</th>
+                    <th class="border-b border-black px-2 py-0.5 font-bold">Stunden</th>
+                    <th class="border-b border-black px-2 py-0.5 font-bold">Trinkgeld</th>
                 </tr>
                 </thead>
                 <tbody>
                 {% for tip in form.tips %}
                     {% if tip.person != 'Bitte wählen...' %}
                         <tr>
-                            <td class="border-t border-black px-2 py-1">{{ tip.person }}</td>
-                            <td class="border-t border-black px-2 py-1">{{ tip.hours_raw }}</td>
-                            <td class="border-t border-black px-2 py-1">{{ tip.tip_formatted }}</td>
+                            <td class="border-t border-black px-2 py-0.5">{{ tip.person }}</td>
+                            <td class="border-t border-black px-2 py-0.5">{{ tip.hours_raw }}</td>
+                            <td class="border-t border-black px-2 py-0.5">{{ tip.tip_formatted }}</td>
                         </tr>
                     {% endif %}
                 {% endfor %}
@@ -94,7 +95,7 @@
         </div>
     </section>
 
-    <section class="pt-10 text-right text-sm">
+    <section class="pt-6 text-right text-sm">
         ____________________________________
     </section>
 </main>
