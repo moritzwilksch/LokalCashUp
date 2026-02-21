@@ -44,7 +44,7 @@
                         <td class="border-t border-black px-2 py-0.5">{{ row.amount }}</td>
                     </tr>
                 {% endfor %}
-                <tr><td class="border-t border-black px-2 py-0.5 font-bold">Bargeld in Kasse</td><td class="border-t border-black px-2 py-0.5 font-bold" colspan="2">{{ form.outputs.geld_in_kasse }}</td></tr>
+                <tr><td class="border-t border-black px-2 py-0.5 font-bold">Bargeld</td><td class="border-t border-black px-2 py-0.5 font-bold" colspan="2">{{ form.outputs.geld_in_kasse }}</td></tr>
                 </tbody>
             </table>
         </div>
@@ -61,7 +61,7 @@
                 <tr><td class="border-t border-black px-2 py-0.5">Bargeld (Z-Bon)</td><td class="border-t border-black px-2 py-0.5">{{ form.zbon.bargeld_zbon }} €</td></tr>
                 <tr><td class="border-t border-black px-2 py-0.5">EC-Trinkgeld (Z-Bon)</td><td class="border-t border-black px-2 py-0.5">{{ form.zbon.ec_trinkgeld_zbon }} €</td></tr>
                 <tr><td class="border-t border-black px-2 py-0.5">Trinkgeld Gesamt</td><td class="border-t border-black px-2 py-0.5">{{ form.outputs.trinkgeld_gesamt }}</td></tr>
-                <tr><td class="border-t border-black px-2 py-0.5">Geld in Umschlag</td><td class="border-t border-black px-2 py-0.5">{{ form.outputs.geld_in_umschlag }}</td></tr>
+                <tr><td class="border-t border-black px-2 py-0.5">Einzahlung aufs Bankkonto</td><td class="border-t border-black px-2 py-0.5">{{ form.outputs.geld_in_umschlag }}</td></tr>
                 <tr><td class="border-t border-black px-2 py-0.5">Tagesumsatz (Z-Bon)</td><td class="border-t border-black px-2 py-0.5">{{ form.zbon.tagesumsatz_zbon }}</td></tr>
                 <tr><td class="border-t border-black px-2 py-0.5">mit Gutschein bezahlt</td><td class="border-t border-black px-2 py-0.5">{{ form.zbon.mit_gutschein_bezahlt }}</td></tr>
                 <tr><td class="border-t border-black px-2 py-0.5 font-bold">Total</td><td class="border-t border-black px-2 py-0.5 font-bold">{{ form.outputs.total }}</td></tr>
