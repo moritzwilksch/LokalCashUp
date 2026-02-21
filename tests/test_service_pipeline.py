@@ -1,5 +1,5 @@
 from app.config import load_config
-from app.models import CashFields
+from app.form_adapter import parse_form_data, to_template_fields
 from app.service import apply_calculation_pipeline
 
 
@@ -7,7 +7,7 @@ config = load_config()
 
 
 def test_full_pipeline_regression_case() -> None:
-    fields = CashFields.model_validate(
+    fields = parse_form_data(
         {
             "gt100In": "20",
             "50eIn": "1",
@@ -27,11 +27,13 @@ def test_full_pipeline_regression_case() -> None:
             "s1": "4",
             "s2": "2",
             "s3": "2",
-        }
+        },
+        today="21.2.2026",
+        config=config,
     )
 
     out = apply_calculation_pipeline(fields, config)
-    dump = out.model_dump(by_alias=True)
+    dump = to_template_fields(out, config)
 
     assert dump["geldInKasse"] == "182,0 €"
     assert dump["barentnahmenSumme"] == "= 33,5 €"

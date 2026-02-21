@@ -1,24 +1,18 @@
 from __future__ import annotations
 
-from app.models import CashFields, DenominationConfig, TipDistribution
+from app.models import CashUpForm, DenominationConfig, TipDistribution
 from app.parsing import format_euro, parse_fuzzy_number, sum_barentnahmen
 
 
-def calculate_stueckelung(
-    fields: CashFields, denominations: list[DenominationConfig]
-) -> tuple[dict[str, str], float]:
-    updates: dict[str, str] = {}
+def calculate_stueckelung(form: CashUpForm, denominations: list[DenominationConfig]) -> float:
     total = 0.0
-
-    raw_values = fields.model_dump(by_alias=True)
-    for denomination in denominations:
-        input_value = parse_fuzzy_number(raw_values.get(denomination.input_field, "0"))
-        amount = input_value * denomination.factor
+    for line, denomination in zip(form.denominations, denominations, strict=True):
+        amount = parse_fuzzy_number(line.quantity_raw) * denomination.factor
+        line.amount_formatted = format_euro(amount)
         total += amount
-        updates[denomination.output_field] = format_euro(amount)
 
-    updates["geldInKasse"] = format_euro(total)
-    return updates, total
+    form.outputs.geld_in_kasse = format_euro(total)
+    return total
 
 
 def calculate_total(tagesumsatz_zb: str, gutschein_bezahlt: str) -> float:
@@ -55,30 +49,14 @@ def calculate_geld_in_umschlag(
     )
 
 
-def calculate_tip_distribution(fields: CashFields, trinkgeld_gesamt: float) -> TipDistribution:
-    hour_values = [
-        parse_fuzzy_number(fields.s1),
-        parse_fuzzy_number(fields.s2),
-        parse_fuzzy_number(fields.s3),
-        parse_fuzzy_number(fields.s4),
-        parse_fuzzy_number(fields.s5),
-        parse_fuzzy_number(fields.s6),
-        parse_fuzzy_number(fields.s7),
-    ]
+def calculate_tip_distribution(form: CashUpForm, trinkgeld_gesamt: float) -> TipDistribution:
+    hour_values = [parse_fuzzy_number(tip.hours_raw) for tip in form.tips]
     total_hours = sum(hour_values)
     if total_hours == 0:
         total_hours = 0.000001
 
-    tips = [format_euro((hours / total_hours) * trinkgeld_gesamt) for hours in hour_values]
-    return TipDistribution(
-        tg1=tips[0],
-        tg2=tips[1],
-        tg3=tips[2],
-        tg4=tips[3],
-        tg5=tips[4],
-        tg6=tips[5],
-        tg7=tips[6],
-    )
+    values = [format_euro((hours / total_hours) * trinkgeld_gesamt) for hours in hour_values]
+    return TipDistribution(values=values)
 
 
 def calculate_barentnahmen_summe(barentnahmen_list: str) -> float:

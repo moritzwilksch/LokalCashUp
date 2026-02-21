@@ -8,7 +8,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
 from app.config import load_config
-from app.models import CashFields
+from app.form_adapter import build_default_form, parse_form_data, to_template_fields
 from app.service import apply_calculation_pipeline
 
 
@@ -16,7 +16,9 @@ app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 config = load_config()
-last_fields = CashFields(dateIn=f"{date.today().day}.{date.today().month}.{date.today().year}")
+last_form = build_default_form(
+    today=f"{date.today().day}.{date.today().month}.{date.today().year}", config=config
+)
 
 
 def current_date_string() -> str:
@@ -26,28 +28,26 @@ def current_date_string() -> str:
 
 @app.get("/")
 async def index(request: Request):
-    default_fields = CashFields(dateIn=current_date_string())
+    default_form = build_default_form(today=current_date_string(), config=config)
     return templates.TemplateResponse(
         "input_form.html",
         {
             "request": request,
             "ma_list": config.employees,
             "today": current_date_string(),
-            "fields": default_fields.model_dump(by_alias=True),
+            "fields": to_template_fields(default_form, config),
         },
     )
 
 
 @app.post("/calculate")
 async def calculate(request: Request):
-    global last_fields
+    global last_form
 
     raw_form = dict(await request.form())
-    raw_form.setdefault("dateIn", current_date_string())
-
-    fields = CashFields.model_validate(raw_form)
-    calculated = apply_calculation_pipeline(fields, config)
-    last_fields = calculated
+    form = parse_form_data(raw_form, today=current_date_string(), config=config)
+    calculated = apply_calculation_pipeline(form, config)
+    last_form = calculated
 
     return templates.TemplateResponse(
         "input_form.html",
@@ -55,7 +55,7 @@ async def calculate(request: Request):
             "request": request,
             "ma_list": config.employees,
             "today": current_date_string(),
-            "fields": calculated.model_dump(by_alias=True),
+            "fields": to_template_fields(calculated, config),
         },
     )
 
@@ -72,7 +72,7 @@ async def print_page(request: Request):
         {
             "request": request,
             "today": current_date_string(),
-            "fields": last_fields.model_dump(by_alias=True),
+            "fields": to_template_fields(last_form, config),
             "wechselgeld": config.wechselgeld_tagesanfang,
         },
     )
