@@ -19,7 +19,7 @@ def test_sum_barentnahmen() -> None:
     assert sum_barentnahmen("10 + 2,5 + 1€") == 13.5
 
 
-def test_format_euro_matches_legacy_shape() -> None:
+def test_format_euro_shape() -> None:
     assert format_euro(1) == "1 €"
     assert format_euro(1.5) == "1,5 €"
     assert format_euro(1.234) == "1,23 €"

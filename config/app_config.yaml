@@ -13,43 +13,34 @@ employees:
   - Leon
   - Aushilfe
 denominations:
-  - ui_label: ">=100€ Betrag"
-    input_field: gt100In
-    output_field: gt100Out
+  - key: betrag_ab_100
+    ui_label: ">=100€ Betrag"
     factor: 1.0
-  - ui_label: "50€ Scheine"
-    input_field: 50eIn
-    output_field: 50eOut
+    input_placeholder: "Betrag"
+  - key: scheine_50e
+    ui_label: "50€ Scheine"
     factor: 50.0
-  - ui_label: "20€ Scheine"
-    input_field: 20eIn
-    output_field: 20eOut
+  - key: scheine_20e
+    ui_label: "20€ Scheine"
     factor: 20.0
-  - ui_label: "10€ Scheine"
-    input_field: 10eIn
-    output_field: 10eOut
+  - key: scheine_10e
+    ui_label: "10€ Scheine"
     factor: 10.0
-  - ui_label: "5€ Scheine"
-    input_field: 5eIn
-    output_field: 5eOut
+  - key: scheine_5e
+    ui_label: "5€ Scheine"
     factor: 5.0
-  - ui_label: "2€ Münzen"
-    input_field: 2eIn
-    output_field: 2eOut
+  - key: muenzen_2e
+    ui_label: "2€ Münzen"
     factor: 2.0
-  - ui_label: "1€ Münzen"
-    input_field: 1eIn
-    output_field: 1eOut
+  - key: muenzen_1e
+    ui_label: "1€ Münzen"
     factor: 1.0
-  - ui_label: "50ct Münzen"
-    input_field: 50ctIn
-    output_field: 50ctOut
+  - key: muenzen_50ct
+    ui_label: "50ct Münzen"
     factor: 0.5
-  - ui_label: "20ct Münzen"
-    input_field: 20ctIn
-    output_field: 20ctOut
+  - key: muenzen_20ct
+    ui_label: "20ct Münzen"
     factor: 0.2
-  - ui_label: "10ct Münzen"
-    input_field: 10ctIn
-    output_field: 10ctOut
+  - key: muenzen_10ct
+    ui_label: "10ct Münzen"
     factor: 0.1

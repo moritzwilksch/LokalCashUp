@@ -4,10 +4,10 @@ from pydantic import BaseModel
 
 
 class DenominationConfig(BaseModel):
+    key: str
     ui_label: str
-    input_field: str
-    output_field: str
     factor: float
+    input_placeholder: str = "Anzahl"
 
 
 class AppConfig(BaseModel):
@@ -22,10 +22,10 @@ class DenominationLine(BaseModel):
 
 
 class ZBonInput(BaseModel):
-    barein_zb: str = ""
-    ectrink_zb: str = ""
-    tagesumsatz_zb: str = ""
-    gutschein_bezahlt: str = ""
+    bargeld_zbon: str = ""
+    ec_trinkgeld_zbon: str = ""
+    tagesumsatz_zbon: str = ""
+    mit_gutschein_bezahlt: str = ""
 
 
 class TipLine(BaseModel):
@@ -44,8 +44,8 @@ class ComputedOutputs(BaseModel):
 
 
 class CashUpForm(BaseModel):
-    date_in: str
-    barentnahmen_list: str = ""
+    datum: str
+    barentnahmen_liste: str = ""
     denominations: list[DenominationLine]
     zbon: ZBonInput
     tips: list[TipLine]

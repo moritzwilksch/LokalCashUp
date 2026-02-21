@@ -18,35 +18,35 @@ def apply_calculation_pipeline(form: CashUpForm, config: AppConfig) -> CashUpFor
 
     calculate_stueckelung(updated, config.denominations)
 
-    barentnahmen_summe = calculate_barentnahmen_summe(updated.barentnahmen_list)
+    barentnahmen_summe = calculate_barentnahmen_summe(updated.barentnahmen_liste)
     updated.outputs.barentnahmen_summe = "= " + format_euro(barentnahmen_summe)
 
-    ausgezaehlte = calculate_ausgezaehlte_bareinnahmen(
+    ausgezaehlte_bareinnahmen = calculate_ausgezaehlte_bareinnahmen(
         geld_in_kasse=updated.outputs.geld_in_kasse,
         barentnahmen_summe=barentnahmen_summe,
         wechselgeld_tagesanfang=config.wechselgeld_tagesanfang,
     )
-    updated.outputs.ausgezaehlte_bareinnahmen = format_euro(ausgezaehlte)
+    updated.outputs.ausgezaehlte_bareinnahmen = format_euro(ausgezaehlte_bareinnahmen)
 
     total = calculate_total(
-        tagesumsatz_zb=updated.zbon.tagesumsatz_zb,
-        gutschein_bezahlt=updated.zbon.gutschein_bezahlt,
+        tagesumsatz_zbon=updated.zbon.tagesumsatz_zbon,
+        mit_gutschein_bezahlt=updated.zbon.mit_gutschein_bezahlt,
     )
     updated.outputs.total = format_euro(total)
 
     trinkgeld_gesamt = calculate_trinkgeld_gesamt(
-        ausgezaehlte_bareinnahmen=ausgezaehlte,
-        barein_zb=updated.zbon.barein_zb,
-        ectrink_zb=updated.zbon.ectrink_zb,
+        ausgezaehlte_bareinnahmen=ausgezaehlte_bareinnahmen,
+        bargeld_zbon=updated.zbon.bargeld_zbon,
+        ec_trinkgeld_zbon=updated.zbon.ec_trinkgeld_zbon,
     )
     updated.outputs.trinkgeld_gesamt = format_euro(trinkgeld_gesamt)
 
-    geld_umschlag = calculate_geld_in_umschlag(
-        barein_zb=updated.zbon.barein_zb,
-        ectrink_zb=updated.zbon.ectrink_zb,
+    geld_in_umschlag = calculate_geld_in_umschlag(
+        bargeld_zbon=updated.zbon.bargeld_zbon,
+        ec_trinkgeld_zbon=updated.zbon.ec_trinkgeld_zbon,
         barentnahmen_summe=barentnahmen_summe,
     )
-    updated.outputs.geld_in_umschlag = format_euro(geld_umschlag)
+    updated.outputs.geld_in_umschlag = format_euro(geld_in_umschlag)
 
     tip_distribution = calculate_tip_distribution(updated, trinkgeld_gesamt)
     for tip, tip_amount in zip(updated.tips, tip_distribution.values, strict=True):

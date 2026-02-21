@@ -15,8 +15,8 @@ def calculate_stueckelung(form: CashUpForm, denominations: list[DenominationConf
     return total
 
 
-def calculate_total(tagesumsatz_zb: str, gutschein_bezahlt: str) -> float:
-    return parse_fuzzy_number(tagesumsatz_zb) - parse_fuzzy_number(gutschein_bezahlt)
+def calculate_total(tagesumsatz_zbon: str, mit_gutschein_bezahlt: str) -> float:
+    return parse_fuzzy_number(tagesumsatz_zbon) - parse_fuzzy_number(mit_gutschein_bezahlt)
 
 
 def calculate_ausgezaehlte_bareinnahmen(
@@ -30,21 +30,21 @@ def calculate_ausgezaehlte_bareinnahmen(
 
 
 def calculate_trinkgeld_gesamt(
-    ausgezaehlte_bareinnahmen: float, barein_zb: str, ectrink_zb: str
+    ausgezaehlte_bareinnahmen: float, bargeld_zbon: str, ec_trinkgeld_zbon: str
 ) -> float:
     return (
         ausgezaehlte_bareinnahmen
-        - parse_fuzzy_number(barein_zb)
-        + parse_fuzzy_number(ectrink_zb)
+        - parse_fuzzy_number(bargeld_zbon)
+        + parse_fuzzy_number(ec_trinkgeld_zbon)
     )
 
 
 def calculate_geld_in_umschlag(
-    barein_zb: str, ectrink_zb: str, barentnahmen_summe: float
+    bargeld_zbon: str, ec_trinkgeld_zbon: str, barentnahmen_summe: float
 ) -> float:
     return (
-        parse_fuzzy_number(barein_zb)
-        - parse_fuzzy_number(ectrink_zb)
+        parse_fuzzy_number(bargeld_zbon)
+        - parse_fuzzy_number(ec_trinkgeld_zbon)
         - barentnahmen_summe
     )
 
@@ -59,5 +59,5 @@ def calculate_tip_distribution(form: CashUpForm, trinkgeld_gesamt: float) -> Tip
     return TipDistribution(values=values)
 
 
-def calculate_barentnahmen_summe(barentnahmen_list: str) -> float:
-    return sum_barentnahmen(barentnahmen_list)
+def calculate_barentnahmen_summe(barentnahmen_liste: str) -> float:
+    return sum_barentnahmen(barentnahmen_liste)
