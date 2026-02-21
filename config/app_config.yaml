@@ -1,0 +1,55 @@
+wechselgeld_tagesanfang: 100
+employees:
+  - Bitte wählen...
+  - Jule
+  - Carallalola
+  - Anke
+  - Katia
+  - Alina
+  - Annalena
+  - Endric
+  - Isabelle
+  - Max
+  - Leon
+  - Aushilfe
+denominations:
+  - ui_label: ">=100€ Betrag"
+    input_field: gt100In
+    output_field: gt100Out
+    factor: 1.0
+  - ui_label: "50€ Scheine"
+    input_field: 50eIn
+    output_field: 50eOut
+    factor: 50.0
+  - ui_label: "20€ Scheine"
+    input_field: 20eIn
+    output_field: 20eOut
+    factor: 20.0
+  - ui_label: "10€ Scheine"
+    input_field: 10eIn
+    output_field: 10eOut
+    factor: 10.0
+  - ui_label: "5€ Scheine"
+    input_field: 5eIn
+    output_field: 5eOut
+    factor: 5.0
+  - ui_label: "2€ Münzen"
+    input_field: 2eIn
+    output_field: 2eOut
+    factor: 2.0
+  - ui_label: "1€ Münzen"
+    input_field: 1eIn
+    output_field: 1eOut
+    factor: 1.0
+  - ui_label: "50ct Münzen"
+    input_field: 50ctIn
+    output_field: 50ctOut
+    factor: 0.5
+  - ui_label: "20ct Münzen"
+    input_field: 20ctIn
+    output_field: 20ctOut
+    factor: 0.2
+  - ui_label: "10ct Münzen"
+    input_field: 10ctIn
+    output_field: 10ctOut
+    factor: 0.1
