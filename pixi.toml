@@ -7,6 +7,12 @@ channels = ["conda-forge"]
 platforms = ["linux-64", "osx-arm64"]
 
 [tasks]
+install = "pip install -r requirements.txt"
+format = "ruff format ."
+lint = "ruff check ."
+lint-fix = "ruff check --fix ."
+typecheck = "ty check ."
+test = "python -m pytest -q"
 
 [dependencies]
 python = "3.12.*"
@@ -17,3 +23,7 @@ pydantic = ">=2.11.7,<3"
 pyyaml = ">=6.0.2,<7"
 google-cloud-sdk = ">=499.0.0,<500"
 pytest = ">=8.4.2,<9"
+ruff = ">=0.13.0,<0.14"
+
+[pypi-dependencies]
+ty = ">=0.0.1"
