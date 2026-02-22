@@ -1,170 +1,103 @@
 <!DOCTYPE html>
-<html>
+<html lang="de">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ausdruck der Abrechnung</title>
     <meta name="author" content="LOKAL">
     <meta name="description" content="Abrechnungsapp">
     <link rel="apple-touch-icon" href="/static/buy.png">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-            crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-            crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-            crossorigin="anonymous"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @page {
+            size: A4;
+            margin: 8mm;
+        }
+
+        body {
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            line-height: 1.2;
+        }
+    </style>
 </head>
-<body>
+<body class="px-2 py-2 text-black">
+<main class="mx-auto w-full max-w-5xl space-y-2">
+    <section class="pb-0.5">
+        <h1 class="text-xl font-bold tracking-tight">Abrechnung vom {{ form.datum }}</h1>
+    </section>
 
-<h1>Abrechnung vom {{ fields['dateIn'] }}</h1>
+    <section class="overflow-hidden border border-black">
+        <div class="overflow-x-auto">
+            <table class="min-w-full text-left text-sm">
+                <thead>
+                <tr>
+                    <th class="border-b border-black px-2 py-0.5 font-bold">Schein-/Münzart</th>
+                    <th class="border-b border-black px-2 py-0.5 font-bold">Anzahl</th>
+                    <th class="border-b border-black px-2 py-0.5 font-bold">Wert</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for row in denomination_rows %}
+                    <tr>
+                        <td class="border-t border-black px-2 py-0.5">{{ row.label }}</td>
+                        <td class="border-t border-black px-2 py-0.5">{{ row.quantity }}</td>
+                        <td class="border-t border-black px-2 py-0.5">{{ row.amount }}</td>
+                    </tr>
+                {% endfor %}
+                <tr><td class="border-t border-black px-2 py-0.5 font-bold">Bargeld</td><td class="border-t border-black px-2 py-0.5 font-bold" colspan="2">{{ form.outputs.geld_in_kasse }}</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
 
-<table class="table table-sm">
-    <thead>
-    <tr>
-        <th scope="col">Schein-/Münzart</th>
-        <th scope="col">Anzahl</th>
-        <th scope="col">Wert</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-        <th scope="row">>=100€</th>
-        <td>{{ fields['gt100In'] }} €</td>
-        <td>{{ fields['gt100Out'] }}</td>
-    </tr>
-    <tr>
-        <th scope="row">50€</th>
-        <td>{{ fields['50eIn'] }}</td>
-        <td>{{ fields['50eOut'] }}</td>
-    </tr>
-    <tr>
-        <th scope="row">20€</th>
-        <td>{{ fields['20eIn'] }}</td>
-        <td>{{ fields['20eOut'] }}</td>
-    </tr>
+    <section class="overflow-hidden border border-black">
+        <div class="overflow-x-auto">
+            <table class="min-w-full text-left text-sm">
+                <tbody>
+                <tr><td class="border-t border-black px-2 py-0.5">Barentnahmen</td><td class="border-t border-black px-2 py-0.5">{{ form.barentnahmen_liste }}</td></tr>
+                <tr><td class="border-t border-black px-2 py-0.5">Barentnahmen (Summe)</td><td class="border-t border-black px-2 py-0.5">{{ form.outputs.barentnahmen_summe }}</td></tr>
+                <tr><td class="border-t border-black px-2 py-0.5">Wechselgeld vor Schichtbeginn</td><td class="border-t border-black px-2 py-0.5">{{ wechselgeld_tagesanfang }} €</td></tr>
+                <tr><td class="border-t border-black px-2 py-0.5">Ausgezählte Bareinnahmen</td><td class="border-t border-black px-2 py-0.5">{{ form.outputs.ausgezaehlte_bareinnahmen }}</td></tr>
+                <tr><td class="border-t border-black px-2 py-0.5">Bargeld (Z-Bon)</td><td class="border-t border-black px-2 py-0.5">{{ form.zbon.bargeld_zbon }} €</td></tr>
+                <tr><td class="border-t border-black px-2 py-0.5">EC-Trinkgeld (Z-Bon)</td><td class="border-t border-black px-2 py-0.5">{{ form.zbon.ec_trinkgeld_zbon }} €</td></tr>
+                <tr><td class="border-t border-black px-2 py-0.5">Trinkgeld Gesamt</td><td class="border-t border-black px-2 py-0.5">{{ form.outputs.trinkgeld_gesamt }}</td></tr>
+                <tr><td class="border-t border-black px-2 py-0.5">Einzahlung aufs Bankkonto</td><td class="border-t border-black px-2 py-0.5">{{ form.outputs.geld_in_umschlag }}</td></tr>
+                <tr><td class="border-t border-black px-2 py-0.5">Tagesumsatz (Z-Bon)</td><td class="border-t border-black px-2 py-0.5">{{ form.zbon.tagesumsatz_zbon }}</td></tr>
+                <tr><td class="border-t border-black px-2 py-0.5">mit Gutschein bezahlt</td><td class="border-t border-black px-2 py-0.5">{{ form.zbon.mit_gutschein_bezahlt }}</td></tr>
+                <tr><td class="border-t border-black px-2 py-0.5 font-bold">Total</td><td class="border-t border-black px-2 py-0.5 font-bold">{{ form.outputs.total }}</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
 
-    <tr>
-        <th scope="row">10€</th>
-        <td>{{ fields['10eIn'] }}</td>
-        <td>{{ fields['10eOut'] }}</td>
-    </tr>
+    <section class="overflow-hidden border border-black">
+        <div class="overflow-x-auto">
+            <table class="min-w-full text-left text-sm">
+                <thead>
+                <tr>
+                    <th class="border-b border-black px-2 py-0.5 font-bold">Person</th>
+                    <th class="border-b border-black px-2 py-0.5 font-bold">Stunden</th>
+                    <th class="border-b border-black px-2 py-0.5 font-bold">Trinkgeld</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for tip in form.tips %}
+                    {% if tip.person != 'Bitte wählen...' %}
+                        <tr>
+                            <td class="border-t border-black px-2 py-0.5">{{ tip.person }}</td>
+                            <td class="border-t border-black px-2 py-0.5">{{ tip.hours_raw }}</td>
+                            <td class="border-t border-black px-2 py-0.5">{{ tip.tip_formatted }}</td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
 
-    <tr>
-        <th scope="row">5€</th>
-        <td>{{ fields['5eIn'] }}</td>
-        <td>{{ fields['5eOut'] }}</td>
-    </tr>
-    <tr>
-        <th scope="row">2€</th>
-        <td>{{ fields['2eIn'] }}</td>
-        <td>{{ fields['2eOut'] }}</td>
-    </tr>
-    <tr>
-        <th scope="row">1€</th>
-        <td>{{ fields['1eIn'] }}</td>
-        <td>{{ fields['1eOut'] }}</td>
-    </tr>
-    <tr>
-        <th scope="row">50ct</th>
-        <td>{{ fields['50ctIn'] }}</td>
-        <td>{{ fields['50ctOut'] }}</td>
-    </tr>
-    <tr>
-        <th scope="row">20ct</th>
-        <td>{{ fields['20ctIn'] }}</td>
-        <td>{{ fields['20ctOut'] }}</td>
-    </tr>
-    <tr>
-        <th scope="row">10ct</th>
-        <td>{{ fields['10ctIn'] }}</td>
-        <td>{{ fields['10ctOut'] }}</td>
-    </tr>
-    <tr>
-        <td>Bargeld in Kasse</td>
-        <td>{{ fields['geldInKasse'] }}</td>
-    </tr>
-    </tbody>
-</table>
-
-<hr>
-
-<table class="table table-sm">
-
-    <tr>
-        <td>Barentnahmen</td>
-        <td>{{ fields['barentnahmenList'] }}</td>
-    </tr>
-    <tr>
-        <td>Barentnahmen (Summe)</td>
-        <td>{{ fields['barentnahmenSumme'] }}</td>
-    </tr>
-    <tr>
-        <td>Wechselgeld vor Schichtbeginn</td>
-        <td>{{ wechselgeld }} €</td>
-    </tr>
-    <tr>
-        <td>Ausgezählte Bareinnahmen</td>
-        <td>{{ fields['ausgezaehlteBareinnahmen'] }}</td>
-    </tr>
-    <tr>
-        <td>Bargeld (Z-Bon)</td>
-        <td>{{ fields['bareinZb'] }} €</td>
-    </tr>
-    <tr>
-        <td>EC-Trinkgeld (Z-Bon)</td>
-        <td>{{ fields['ectrinkZb'] }} €</td>
-    </tr>
-    <tr>
-        <td>Trinkgeld Gesamt</td>
-        <td>{{ fields['trinkgeldGesamt'] }}</td>
-    </tr>
-    <tr>
-        <td>Geld in Umschlag</td>
-        <td>{{ fields['geldInUmschlag'] }}</td>
-    </tr>
-    <tr>
-        <td>Tagesumsatz (Z-Bon)</td>
-        <td>{{ fields['tagesumsatzZb'] }}</td>
-    </tr>
-
-    <tr>
-        <td>mit Gutschein bezahlt</td>
-        <td>{{ fields['gutschein_bezahlt'] }}</td>
-    </tr>
-    <tr>
-        <td><b>Total</b></td>
-        <td>{{ fields['total'] }}</td>
-    </tr>
-</table>
-
-<table class="table table-sm">
-    <thead>
-    <tr>
-        <th>Person</th>
-        <th>Stunden</th>
-        <th>Trinkgeld</th>
-    </tr>
-    </thead>
-    {% for t in [('p1', 's1', 'tg1'), ('p2', 's2', 'tg2'), ('p3', 's3', 'tg3'), ('p4', 's4', 'tg4'), ('p5', 's5', 'tg5'), ('p6', 's6', 'tg6'), ('p7', 's7', 'tg7')] %}
-        {% if fields[t[0]] != 'Bitte wählen...' %}
-            <tr>
-                <td>{{ fields[t[0]] }}</td>
-                <td>{{ fields[t[1]] }}</td>
-                <td>{{ fields[t[2]] }}</td>
-            </tr>
-        {% endif %}
-    {% endfor %}
-</table>
-
-<br>
-<br>
-<br>
-<br>
-
-<p class="text-right">____________________________________</p>
-
+    <section class="pt-6 text-right text-sm">
+        ____________________________________
+    </section>
+</main>
 </body>
+</html>

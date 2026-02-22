@@ -1,554 +1,329 @@
 <!DOCTYPE html>
-<html>
+<html lang="de">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Abrechnung</title>
     <meta name="author" content="LOKAL">
     <meta name="description" content="Abrechnungsapp">
     <link rel="apple-touch-icon" href="/static/buy.png">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-            crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-            crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-            crossorigin="anonymous"></script>
-
-
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/htmx.org@2.0.4"></script>
 </head>
-<body class="bg-light">
-<hr>
-<h2 style="text-align: center">Abrechnung</h2>
+<body class="min-h-screen bg-slate-100 text-slate-900">
+<main class="relative mx-auto w-full max-w-6xl px-4 py-6 md:px-6">
+    <button type="button" id="open-settings"
+            class="absolute right-4 top-4 inline-flex h-10 w-10 items-center justify-center rounded-xl border border-slate-300 bg-white text-slate-700 shadow-sm transition hover:bg-slate-100 md:right-6"
+            aria-label="Einstellungen öffnen">
+        <svg viewBox="0 0 24 24" class="h-5 w-5 fill-none stroke-current" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M19.4 15a1.7 1.7 0 0 0 .34 1.86l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.86-.34 1.7 1.7 0 0 0-1.05 1.56V21a2 2 0 1 1-4 0v-.09a1.7 1.7 0 0 0-1.05-1.56 1.7 1.7 0 0 0-1.86.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-1.56-1.05H3a2 2 0 1 1 0-4h.04A1.7 1.7 0 0 0 4.6 8.9a1.7 1.7 0 0 0-.34-1.86l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.7 1.7 0 0 0 1.86.34h0A1.7 1.7 0 0 0 10 2.99V3a2 2 0 1 1 4 0v-.01a1.7 1.7 0 0 0 1.05 1.56h0a1.7 1.7 0 0 0 1.86-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.7 1.7 0 0 0-.34 1.86v0A1.7 1.7 0 0 0 20.96 10H21a2 2 0 1 1 0 4h-.04A1.7 1.7 0 0 0 19.4 15z"></path>
+        </svg>
+    </button>
 
+    <h1 class="mb-6 text-center text-3xl font-semibold tracking-tight">Abrechnung</h1>
 
-<form name="theForm" action="/calculate" method="post">
-    <div class="input-group mb-3 mx-auto" style="max-width: 20%;">
-        <div class="input-group-prepend">
-            <span class="input-group-text" id="inputGroup-sizing-default">Datum</span>
-        </div>
-        <input type="text" name="dateIn" class="form-control" placeholder="TT.MM.JJJJ"
-               aria-describedby="inputGroup-sizing-default" value="{{ today }}" required>
-    </div>
-    <div class="card border-dark mb-3 mx-auto" style="max-width: 90%;">
-        <div class="card-header"><h5>Stückelung</h5></div>
-        <div class="card-body text-dark">
+    <form id="cashup-form" name="theForm" action="/calculate" method="post" class="space-y-6">
+        <input type="hidden" id="employee_list" name="employee_list" value="{{ employee_list }}">
+        <section class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm md:p-6">
+            <label for="datum" class="mb-2 block text-base font-medium text-slate-700">Datum</label>
+            <input type="text" id="datum" name="datum" placeholder="TT.MM.JJJJ" value="{{ form.datum }}" required
+                   class="h-12 w-full rounded-xl border border-slate-300 px-4 text-lg outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100">
+        </section>
 
-            <div class="container">
-                <!-- ONE FORM ROW -->
-                <div class="form-row">
-                    <div class="col-md-6 mb-3">
-                        <div class="input-group md-1">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" style="width: 250px;">>=100€ Betrag</span>
-                                <input type="number" class="form-control" id="gt100In" name="gt100In"
-                                       placeholder="Betrag"
-                                       required value="{{ fields['gt100In'] }}"
-                                       onkeyup="document.getElementById('gt100Out').innerHTML = document.getElementById('gt100In').value + ',00 €'">
-                            </div>
+        <section class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm md:p-6">
+            <h2 class="mb-4 text-xl font-semibold">Stückelung</h2>
+            <div class="space-y-3">
+                {% for row in denomination_rows %}
+                    <div class="grid items-center gap-3 md:grid-cols-2">
+                        <div>
+                            <label for="{{ row.input_id }}" class="mb-2 block text-base font-medium text-slate-700">{{ row.label }}</label>
+                            <input type="number" id="{{ row.input_id }}" name="{{ row.input_name }}" placeholder="{{ row.placeholder }}" required value="{{ row.quantity }}"
+                                   hx-post="/preview/denomination/{{ row.index }}"
+                                   hx-trigger="input changed delay:120ms"
+                                   hx-target="#denom-output-{{ row.index }}"
+                                   hx-swap="outerHTML"
+                                   class="h-12 w-full rounded-xl border border-slate-300 px-4 text-lg outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100">
+                        </div>
+                        <div class="text-left md:text-right">
+                            <span id="denom-output-{{ row.index }}" class="inline-flex min-h-12 min-w-36 items-center justify-center rounded-xl bg-slate-900 px-4 py-2 text-lg font-semibold text-white">{{ row.amount }}</span>
                         </div>
                     </div>
-                    <div class="col-md-6 mb-3">
-                        <h3><span class="badge  badge-light" id="gt100Out">{{ fields['gt100Out'] }}</span></h3>
-                    </div>
-                </div>
-
-                <!-- ONE FORM ROW -->
-                <div class="form-row">
-                    <div class="col-md-6 mb-3">
-                        <div class="input-group md-1">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" style="width: 250px;">50€ Scheine</span>
-                                <input type="number" class="form-control" id="50eIn" name="50eIn" placeholder="Anzahl"
-                                       required value="{{ fields['50eIn'] }}"
-                                       onkeyup="document.getElementById('50eOut').innerHTML = document.getElementById('50eIn').value*50 + ',00 €'">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <h3><span class="badge  badge-light" id="50eOut">{{ fields['50eOut'] }}</span></h3>
-                    </div>
-                </div>
-
-                <!-- ONE FORM ROW -->
-                <div class="form-row">
-                    <div class="col-md-6 mb-3">
-                        <div class="input-group md-1">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" style="width: 250px;">20€ Scheine</span>
-                                <input type="number" class="form-control" id="20eIn" name="20eIn" placeholder="Anzahl"
-                                       required value="{{ fields['20eIn'] }}"
-                                       onkeyup="document.getElementById('20eOut').innerHTML = document.getElementById('20eIn').value*20 + ',00 €'">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <h3><span class="badge  badge-light" id="20eOut">{{ fields['20eOut'] }}</span></h3>
-                    </div>
-                </div>
-
-                <!-- ONE FORM ROW -->
-                <div class="form-row">
-                    <div class="col-md-6 mb-3">
-                        <div class="input-group md-1">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" style="width: 250px;">10€ Scheine</span>
-                                <input type="number" class="form-control" id="10eIn" name="10eIn" placeholder="Anzahl"
-                                       required value="{{ fields['10eIn'] }}"
-                                       onkeyup="document.getElementById('10eOut').innerHTML = document.getElementById('10eIn').value*10 + ',00 €'">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <h3><span class="badge  badge-light" id="10eOut">{{ fields['10eOut'] }}</span></h3>
-                    </div>
-                </div>
-
-                <!-- ONE FORM ROW -->
-                <div class="form-row">
-                    <div class="col-md-6 mb-3">
-                        <div class="input-group md-1">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" style="width: 250px;">5€ Scheine</span>
-                                <input type="number" class="form-control" id="5eIn" name="5eIn" placeholder="Anzahl"
-                                       required value="{{ fields['5eIn'] }}"
-                                       onkeyup="document.getElementById('5eOut').innerHTML = document.getElementById('5eIn').value*5 + ',00 €'">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <h3><span class="badge  badge-light" id="5eOut">{{ fields['5eOut'] }}</span></h3>
-                    </div>
-                </div>
-
-                <!-- ONE FORM ROW -->
-                <div class="form-row">
-                    <div class="col-md-6 mb-3">
-                        <div class="input-group md-1">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" style="width: 250px;">2€ Münzen</span>
-                                <input type="number" class="form-control" id="2eIn" name="2eIn" placeholder="Anzahl"
-                                       required value="{{ fields['2eIn'] }}"
-                                       onkeyup="document.getElementById('2eOut').innerHTML = document.getElementById('2eIn').value*2 + ',00 €'">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <h3><span class="badge  badge-light" id="2eOut">{{ fields['2eOut'] }}</span></h3>
-                    </div>
-                </div>
-
-                <!-- ONE FORM ROW -->
-                <div class="form-row">
-                    <div class="col-md-6 mb-3">
-                        <div class="input-group md-1">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" style="width: 250px;">1€ Münzen</span>
-                                <input type="number" class="form-control" id="1eIn" name="1eIn" placeholder="Anzahl"
-                                       required value="{{ fields['1eIn'] }}"
-                                       onkeyup="document.getElementById('1eOut').innerHTML = document.getElementById('1eIn').value*1 + ',00 €'">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <h3><span class="badge  badge-light" id="1eOut">{{ fields['1eOut'] }}</span></h3>
-                    </div>
-                </div>
-
-                <!-- ONE FORM ROW -->
-                <div class="form-row">
-                    <div class="col-md-6 mb-3">
-                        <div class="input-group md-1">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" style="width: 250px;">50ct Münzen</span>
-                                <input type="number" class="form-control" id="50ctIn" name="50ctIn" placeholder="Anzahl"
-                                       required value="{{ fields['50ctIn'] }}"
-                                       onkeyup="document.getElementById('50ctOut').innerHTML = (document.getElementById('50ctIn').value*0.5 + ' €').replace('.', ',');">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <h3><span class="badge  badge-light" id="50ctOut">{{ fields['50ctOut'] }}</span></h3>
-                    </div>
-                </div>
-
-                <!-- ONE FORM ROW -->
-                <div class="form-row">
-                    <div class="col-md-6 mb-3">
-                        <div class="input-group md-1">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" style="width: 250px;">20ct Münzen</span>
-                                <input type="number" class="form-control" id="20ctIn" name="20ctIn" placeholder="Anzahl"
-                                       required value="{{ fields['20ctIn'] }}"
-                                       onkeyup="document.getElementById('20ctOut').innerHTML = (document.getElementById('20ctIn').value*0.2 + ' €').replace('.', ',');">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <h3><span class="badge  badge-light" id="20ctOut">{{ fields['20ctOut'] }}</span></h3>
-                    </div>
-                </div>
-
-                <!-- ONE FORM ROW -->
-                <div class="form-row">
-                    <div class="col-md-6 mb-3">
-                        <div class="input-group md-1">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" style="width: 250px;">10ct Münzen</span>
-                                <input type="number" class="form-control" id="10ctIn" name="10ctIn" placeholder="Anzahl"
-                                       required value="{{ fields['10ctIn'] }}"
-                                       onkeyup="document.getElementById('10ctOut').innerHTML = (document.getElementById('10ctIn').value*0.1 + ' €').replace('.', ',');">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <h3><span class="badge  badge-light" id="10ctOut">{{ fields['10ctOut'] }}</span></h3>
-                    </div>
-                </div>
-                <hr>
-                <h4>Geld in der Kasse: <span class="badge  badge-dark">{{ fields['geldInKasse'] }}</span></h4>
-                <!-- END OF CARD -->
+                {% endfor %}
             </div>
-        </div>
-    </div>
 
-    <!-- START OF SECOND CARD -->
-
-    <div class="card border-dark mb-3 mx-auto" style="max-width: 90%;">
-        <div class="card-header"><h5>Entnahmen</h5></div>
-        <div class="card-body text-dark">
-            <div class="container">
-
-
-                <!-- ONE FORM ROW -->
-                <div class="form-row">
-                    <div class="col-md-10 mb-3">
-                        <div class="input-group md-1">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" style="width: 150px;">Barentnahmen</span>
-                                <input type="text" class="form-control" id="barentnahmen" name="barentnahmenList"
-                                       style="width: 500px;"
-                                       placeholder="... + ... + ... + ..." required
-                                       value="{{ fields['barentnahmenList'] }}">
-                            </div>
-                            <small id="barentnahmenHelp" class="form-text text-muted">Bitte unbedingt mit + Zeichen
-                                voneinander
-                                trennen!</small>
-                        </div>
-                    </div>
-                    <div class="col-md-2 mb-3">
-                        <h4><span class="badge  badge-dark">{{ fields['barentnahmenSumme'] }}</span></h4>
-                    </div>
-                </div>
-                <hr>
-                <h4>Ausgezählte Bareinnahmen: <span
-                        class="badge  badge-dark">{{ fields['ausgezaehlteBareinnahmen'] }}</span></h4>
+            <div class="mt-5 border-t border-slate-200 pt-4">
+                <p class="text-xl font-semibold">Geld in der Kasse: <span class="rounded-xl bg-slate-900 px-3 py-1 text-white">{{ form.outputs.geld_in_kasse }}</span></p>
             </div>
-        </div>
-    </div>
+        </section>
 
-    <!-- START OF THIRD CARD -->
-
-    <div class="card border-dark mb-3 mx-auto" style="max-width: 90%;">
-        <div class="card-header"><h5>Z-Bon Zahlen</h5></div>
-        <div class="card-body text-dark">
-            <div class="container">
-
-
-                <div class="form-row">
-                    <div class="col-md-6 mb-3">
-                        <div class="input-group md-1">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" style="width: 250px;">Bargeld (Z-Bon)</span>
-                                <input type="text" pattern="^\d*(\{., \,}\d{0,2})?$" class="form-control" id="bareinZb"
-                                       name="bareinZb" placeholder="Euro"
-                                       required value="{{ fields['bareinZb'] }}">
-                            </div>
-                        </div>
-                    </div>
+        <section class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm md:p-6">
+            <h2 class="mb-4 text-xl font-semibold">Entnahmen</h2>
+            <div class="grid gap-3 md:grid-cols-[1fr_auto] md:items-end">
+                <div>
+                    <label for="barentnahmen_liste" class="mb-2 block text-base font-medium text-slate-700">Barentnahmen</label>
+                    <input type="text" id="barentnahmen_liste" name="barentnahmen_liste" placeholder="... + ... + ... + ..." required
+                           value="{{ form.barentnahmen_liste }}"
+                           class="h-12 w-full rounded-xl border border-slate-300 px-4 text-lg outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100">
+                    <p class="mt-2 text-sm text-slate-500">Bitte unbedingt mit + Zeichen voneinander trennen!</p>
                 </div>
-
-                <div class="form-row">
-                    <div class="col-md-6 mb-3">
-                        <div class="input-group md-1">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" style="width: 250px;">EC-Trinkgeld (Z-Bon)</span>
-                                <input type="text" pattern="^\d*(\{., \,}\d{0,2})?$" class="form-control" id="ectrinkZb"
-                                       name="ectrinkZb" placeholder="Euro"
-                                       required value="{{ fields['ectrinkZb'] }}">
-                            </div>
-                        </div>
-                    </div>
+                <div>
+                    <span class="inline-flex min-h-12 min-w-36 items-center justify-center rounded-xl bg-slate-900 px-4 py-2 text-lg font-semibold text-white">{{ form.outputs.barentnahmen_summe }}</span>
                 </div>
-
-                <div class="form-row">
-                    <div class="col-md-6 mb-3">
-                        <div class="input-group md-1">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" style="width: 250px;">Gesamter Tagesumsatz (Z-Bon)</span>
-                                <input type="text" pattern="^\d*(\{., \,}\d{0,2})?$" class="form-control"
-                                       id="tagesumsatzZb" name="tagesumsatzZb" placeholder="Euro"
-                                       required value="{{ fields['tagesumsatzZb'] }}">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-
-
-
-                <div class="form-row">
-                    <div class="col-md-6 mb-3">
-                        <div class="input-group md-1">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" style="width: 250px;">mit Gutschein bezahlt</span>
-                                <input type="text" pattern="^\d*(\{., \,}\d{0,2})?$" class="form-control"
-                                       id="gutschein_bezahlt" name="gutschein_bezahlt" placeholder="Euro"
-                                       required value="{{ fields['gutschein_bezahlt'] }}">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-
-                <hr>
-                <h4>Total: <span class="badge  badge-dark">{{ fields['total'] }}</span></h4>
-                <hr>
-                <h4>Trinkgeld Gesamt: <span class="badge  badge-dark">{{ fields['trinkgeldGesamt'] }}</span></h4>
-                <h4>Geld in Umschlag: <span class="badge  badge-dark">{{ fields['geldInUmschlag'] }}</span></h4>
-
             </div>
-        </div>
-    </div>
 
-
-    <!-- START OF FOURTH CARD -->
-
-    <div class="card border-dark mb-3 mx-auto" style="max-width: 90%;">
-        <div class="card-header"><h5>Aufteilung Trinkgelder</h5></div>
-        <div class="card-body text-dark">
-            <div class="container">
-
-
-                <!-- ONE FORM ROW -->
-                <div class="form-row">
-                    <div class="col-md-4 mb-1">
-                        <div class="form-group">
-                            <label for="exampleFormControlSelect1">Person</label>
-                            <select class="form-control" id="exampleFormControlSelect1" name="p1">
-                                {% for item in ma_list %}
-                                    {% if item == fields['p1'] %}
-                                        <option selected>{{ item }}</option>
-                                    {% else %}
-                                        <option>{{ item }}</option>
-                                    {% endif %}
-                                {% endfor %}
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="col-md-4 mb-1">
-                        <label for="exampleFormControlInput1">Stunden</label>
-                        <input type="text" pattern="^\d*(\{., \,}\d{0,2})?$" class="form-control"
-                               id="exampleFormControlInput1" name="s1"
-                               placeholder="Stunden" value="{{ fields['s1'] }}">
-                    </div>
-
-                    <div class="col-md-4 mb-1">
-                        <label for="TG1">Trinkgeld</label>
-                        <h3><span class="badge  badge-dark" id="TG1">{{ fields['tg1'] }}</span></h3>
-                    </div>
-                </div>
-
-                <!-- ONE FORM ROW -->
-                <div class="form-row">
-                    <div class="col-md-4 mb-1">
-                        <div class="form-group">
-                            <select class="form-control" id="exampleFormControlSelect1" name="p2">
-                                {% for item in ma_list %}
-                                    {% if item == fields['p2'] %}
-                                        <option selected>{{ item }}</option>
-                                    {% else %}
-                                        <option>{{ item }}</option>
-                                    {% endif %}
-                                {% endfor %}
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="col-md-4 mb-1">
-                        <input type="text" pattern="^\d*(\{., \,}\d{0,2})?$" class="form-control"
-                               id="exampleFormControlInput1"
-                               placeholder="Stunden" name="s2" value="{{ fields['s2'] }}">
-                    </div>
-
-                    <div class="col-md-4 mb-1">
-                        <h3><span class="badge  badge-dark" id="TG2">{{ fields['tg2'] }}</span></h3>
-                    </div>
-                </div>
-
-                <!-- ONE FORM ROW -->
-                <div class="form-row">
-                    <div class="col-md-4 mb-1">
-                        <div class="form-group">
-                            <select class="form-control" id="exampleFormControlSelect1" name="p3">
-                                {% for item in ma_list %}
-                                    {% if item == fields['p3'] %}
-                                        <option selected>{{ item }}</option>
-                                    {% else %}
-                                        <option>{{ item }}</option>
-                                    {% endif %}
-                                {% endfor %}
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="col-md-4 mb-1">
-                        <input type="text" pattern="^\d*(\{., \,}\d{0,2})?$" class="form-control"
-                               id="exampleFormControlInput1"
-                               placeholder="Stunden" name="s3" value="{{ fields['s3'] }}">
-                    </div>
-
-                    <div class="col-md-4 mb-1">
-                        <h3><span class="badge  badge-dark" id="TG3">{{ fields['tg3'] }}</span></h3>
-                    </div>
-                </div>
-
-                <!-- ONE FORM ROW -->
-                <div class="form-row">
-                    <div class="col-md-4 mb-1">
-                        <div class="form-group">
-                            <select class="form-control" id="exampleFormControlSelect1" name="p4">
-                                {% for item in ma_list %}
-                                    {% if item == fields['p4'] %}
-                                        <option selected>{{ item }}</option>
-                                    {% else %}
-                                        <option>{{ item }}</option>
-                                    {% endif %}
-                                {% endfor %}
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="col-md-4 mb-1">
-                        <input type="text" pattern="^\d*(\{., \,}\d{0,2})?$" class="form-control"
-                               id="exampleFormControlInput1"
-                               placeholder="Stunden" name="s4" value="{{ fields['s4'] }}">
-                    </div>
-
-                    <div class="col-md-4 mb-1">
-                        <h3><span class="badge  badge-dark" id="TG4">{{ fields['tg4'] }}</span></h3>
-                    </div>
-                </div>
-
-                <!-- ONE FORM ROW -->
-                <div class="form-row">
-                    <div class="col-md-4 mb-1">
-                        <div class="form-group">
-                            <select class="form-control" id="exampleFormControlSelect1" name="p5">
-                                {% for item in ma_list %}
-                                    {% if item == fields['p5'] %}
-                                        <option selected>{{ item }}</option>
-                                    {% else %}
-                                        <option>{{ item }}</option>
-                                    {% endif %}
-                                {% endfor %}
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="col-md-4 mb-1">
-                        <input type="text" pattern="^\d*(\{., \,}\d{0,2})?$" class="form-control"
-                               id="exampleFormControlInput1"
-                               placeholder="Stunden" name="s5" value="{{ fields['s5'] }}">
-                    </div>
-
-                    <div class="col-md-4 mb-1">
-                        <h3><span class="badge  badge-dark" id="TG5">{{ fields['tg5'] }}</span></h3>
-                    </div>
-                </div>
-                
-                
-                <!-- ONE FORM ROW -->
-                <div class="form-row">
-                    <div class="col-md-4 mb-1">
-                        <div class="form-group">
-                            <select class="form-control" id="exampleFormControlSelect1" name="p6">
-                                {% for item in ma_list %}
-                                    {% if item == fields['p6'] %}
-                                        <option selected>{{ item }}</option>
-                                    {% else %}
-                                        <option>{{ item }}</option>
-                                    {% endif %}
-                                {% endfor %}
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="col-md-4 mb-1">
-                        <input type="text" pattern="^\d*(\{., \,}\d{0,2})?$" class="form-control"
-                               id="exampleFormControlInput1"
-                               placeholder="Stunden" name="s6" value="{{ fields['s6'] }}">
-                    </div>
-
-                    <div class="col-md-4 mb-1">
-                        <h3><span class="badge  badge-dark" id="TG6">{{ fields['tg6'] }}</span></h3>
-                    </div>
-                </div>
-                
-                
-                <!-- ONE FORM ROW -->
-                <div class="form-row">
-                    <div class="col-md-4 mb-1">
-                        <div class="form-group">
-                            <select class="form-control" id="exampleFormControlSelect1" name="p7">
-                                {% for item in ma_list %}
-                                    {% if item == fields['p7'] %}
-                                        <option selected>{{ item }}</option>
-                                    {% else %}
-                                        <option>{{ item }}</option>
-                                    {% endif %}
-                                {% endfor %}
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="col-md-4 mb-1">
-                        <input type="text" pattern="^\d*(\{., \,}\d{0,2})?$" class="form-control"
-                               id="exampleFormControlInput1"
-                               placeholder="Stunden" name="s7" value="{{ fields['s7'] }}">
-                    </div>
-
-                    <div class="col-md-4 mb-1">
-                        <h3><span class="badge  badge-dark" id="TG7">{{ fields['tg7'] }}</span></h3>
-                    </div>
-                </div>
-
-
+            <div class="mt-5 border-t border-slate-200 pt-4">
+                <p class="text-xl font-semibold">Ausgezählte Bareinnahmen: <span class="rounded-xl bg-slate-900 px-3 py-1 text-white">{{ form.outputs.ausgezaehlte_bareinnahmen }}</span></p>
             </div>
+        </section>
+
+        <section class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm md:p-6">
+            <h2 class="mb-4 text-xl font-semibold">Z-Bon Zahlen</h2>
+            <div class="space-y-3">
+                <div>
+                    <label for="zbon_bargeld" class="mb-2 block text-base font-medium text-slate-700">Bargeld (Z-Bon)</label>
+                    <input type="text" pattern="^\d*(\{., \,}\d{0,2})?$" id="zbon_bargeld" name="zbon_bargeld" placeholder="Euro" required value="{{ form.zbon.bargeld_zbon }}"
+                           class="h-12 w-full rounded-xl border border-slate-300 px-4 text-lg outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100 md:max-w-xl">
+                </div>
+
+                <div>
+                    <label for="ec_trinkgeld_zbon" class="mb-2 block text-base font-medium text-slate-700">EC-Trinkgeld (Z-Bon)</label>
+                    <input type="text" pattern="^\d*(\{., \,}\d{0,2})?$" id="ec_trinkgeld_zbon" name="ec_trinkgeld_zbon" placeholder="Euro" required value="{{ form.zbon.ec_trinkgeld_zbon }}"
+                           class="h-12 w-full rounded-xl border border-slate-300 px-4 text-lg outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100 md:max-w-xl">
+                </div>
+
+                <div>
+                    <label for="tagesumsatz_zbon" class="mb-2 block text-base font-medium text-slate-700">Gesamter Tagesumsatz (Z-Bon)</label>
+                    <input type="text" pattern="^\d*(\{., \,}\d{0,2})?$" id="tagesumsatz_zbon" name="tagesumsatz_zbon" placeholder="Euro" required value="{{ form.zbon.tagesumsatz_zbon }}"
+                           class="h-12 w-full rounded-xl border border-slate-300 px-4 text-lg outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100 md:max-w-xl">
+                </div>
+
+                <div>
+                    <label for="mit_gutschein_bezahlt" class="mb-2 block text-base font-medium text-slate-700">mit Gutschein bezahlt</label>
+                    <input type="text" pattern="^\d*(\{., \,}\d{0,2})?$" id="mit_gutschein_bezahlt" name="mit_gutschein_bezahlt" placeholder="Euro" required value="{{ form.zbon.mit_gutschein_bezahlt }}"
+                           class="h-12 w-full rounded-xl border border-slate-300 px-4 text-lg outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100 md:max-w-xl">
+                </div>
+            </div>
+
+            <div class="mt-5 space-y-3 border-t border-slate-200 pt-4 text-xl font-semibold">
+                <p>Total: <span class="rounded-xl bg-slate-900 px-3 py-1 text-white">{{ form.outputs.total }}</span></p>
+                <p>Trinkgeld Gesamt: <span class="rounded-xl bg-slate-900 px-3 py-1 text-white">{{ form.outputs.trinkgeld_gesamt }}</span></p>
+                <p>Einzahlung aufs Bankkonto: <span class="rounded-xl bg-slate-900 px-3 py-1 text-white">{{ form.outputs.geld_in_umschlag }}</span></p>
+            </div>
+        </section>
+
+        <section class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm md:p-6">
+            <h2 class="mb-4 text-xl font-semibold">Aufteilung Trinkgelder</h2>
+            <div class="mb-3 grid gap-3 md:grid-cols-3">
+                <p class="text-base font-medium text-slate-700">Person</p>
+                <p class="text-base font-medium text-slate-700">Stunden</p>
+                <p class="text-base font-medium text-slate-700">Trinkgeld</p>
+            </div>
+
+            {% for n in range(1, 8) %}
+                {% set tip = form.tips[n - 1] %}
+                <div class="mb-3 grid gap-3 md:grid-cols-3">
+                    <div>
+                        <label for="trinkgeld_person_{{ n }}" class="sr-only">Person</label>
+                        <select id="trinkgeld_person_{{ n }}" name="trinkgeld_person_{{ n }}"
+                                class="h-12 w-full rounded-xl border border-slate-300 bg-white px-4 text-lg outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100">
+                            {% for item in ma_list %}
+                                {% if item == tip.person %}
+                                    <option selected>{{ item }}</option>
+                                {% else %}
+                                    <option>{{ item }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div>
+                        <label for="trinkgeld_stunden_{{ n }}" class="sr-only">Stunden</label>
+                        <input type="text" pattern="^\d*(\{., \,}\d{0,2})?$" id="trinkgeld_stunden_{{ n }}" name="trinkgeld_stunden_{{ n }}" placeholder="Stunden" value="{{ tip.hours_raw }}"
+                               class="h-12 w-full rounded-xl border border-slate-300 px-4 text-lg outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100">
+                    </div>
+                    <div class="flex items-center">
+                        <span class="inline-flex min-h-12 min-w-36 items-center justify-center rounded-xl bg-slate-900 px-4 py-2 text-lg font-semibold text-white">{{ tip.tip_formatted }}</span>
+                    </div>
+                </div>
+            {% endfor %}
+        </section>
+
+        <section class="grid gap-3 pb-2 md:grid-cols-3">
+            <button type="button" onclick="resetEmployeeListAndRedirect()"
+                    class="inline-flex h-14 items-center justify-center rounded-xl border border-rose-300 bg-rose-50 px-6 text-lg font-semibold text-rose-700 shadow-sm transition hover:bg-rose-100 active:scale-[0.99]">
+                Reset
+            </button>
+            <button type="button" onclick="window.location.href='/printPage'"
+                    class="inline-flex h-14 items-center justify-center rounded-xl border border-sky-300 bg-sky-50 px-6 text-lg font-semibold text-sky-700 shadow-sm transition hover:bg-sky-100 active:scale-[0.99]">
+                Drucken
+            </button>
+            <button type="submit"
+                    class="inline-flex h-14 items-center justify-center rounded-xl bg-emerald-600 px-6 text-lg font-semibold text-white shadow-sm transition hover:bg-emerald-700 active:scale-[0.99]">
+                Beträge berechnen
+            </button>
+        </section>
+    </form>
+
+    <p class="pt-4 text-center text-sm text-slate-400">&copy; MVW</p>
+</main>
+<div id="settings-modal" class="fixed inset-0 z-20 hidden place-items-center bg-slate-900/45 p-4 grid">
+    <div class="w-full max-w-lg rounded-2xl border border-slate-200 bg-white p-5 shadow-xl">
+        <h2 class="mb-2 text-xl font-semibold">Mitarbeiterliste</h2>
+        <p class="mb-3 text-sm text-slate-600">Ein Name pro Zeile. Diese Liste bestimmt die Auswahl in allen Person-Dropdowns.</p>
+        <label for="employee_list_editor" class="sr-only">Mitarbeiterliste</label>
+        <textarea id="employee_list_editor" rows="12"
+                  class="w-full rounded-xl border border-slate-300 px-3 py-2 text-base outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100"></textarea>
+        <div class="mt-4 flex justify-end gap-3">
+            <button type="button" id="cancel-settings"
+                    class="inline-flex h-11 items-center justify-center rounded-xl border border-slate-300 bg-white px-5 text-base font-semibold text-slate-700 transition hover:bg-slate-100">
+                Abbrechen
+            </button>
+            <button type="button" id="save-settings"
+                    class="inline-flex h-11 items-center justify-center rounded-xl bg-emerald-600 px-5 text-base font-semibold text-white transition hover:bg-emerald-700">
+                Speichern
+            </button>
         </div>
     </div>
+</div>
+<script>
+    const EMPLOYEE_LIST_KEY = "cashup_employee_list";
 
+    function normalizeEmployeeName(name) {
+        const normalized = (name || "").trim();
+        if (!normalized || normalized.length > 40) {
+            return null;
+        }
+        return normalized;
+    }
 
-    <div class="d-flex flex-row-reverse">
-        <button type="submit" class="btn btn-primary btn-lg mx-auto">Beträge berechnen</button>
-        <button type="button"
-                onclick="window.location.href='/printPage'"
-                class="btn btn-outline-info btn-lg mx-auto">Drucken
-        </button>
-        <button type="button"
-                onclick="window.location.href='/resetFields'"
-                class="btn btn-outline-danger btn-lg mx-auto">Reset
-        </button>
-    </div>
-</form>
+    function dedupeEmployees(names) {
+        const deduped = [];
+        const seen = new Set();
+        for (const name of names) {
+            const normalized = normalizeEmployeeName(name);
+            if (!normalized) continue;
+            const key = normalized.toLocaleLowerCase();
+            if (seen.has(key)) continue;
+            seen.add(key);
+            deduped.push(normalized);
+        }
+        return deduped;
+    }
 
+    function getSelectElements() {
+        return Array.from(document.querySelectorAll('select[id^="trinkgeld_person_"]'));
+    }
 
-<hr>
+    function getDefaultOptionsFromDom() {
+        const firstSelect = getSelectElements()[0];
+        if (!firstSelect) return [];
+        return Array.from(firstSelect.options).map((option) => option.textContent || "");
+    }
 
-<p align="center" style="color: #AAAAAA;">&copy; MVW</p>
+    function parseListText(text) {
+        return dedupeEmployees((text || "").split(/\r?\n/));
+    }
+
+    function getHiddenEmployeeList() {
+        const hidden = document.getElementById("employee_list");
+        if (!hidden || !hidden.value) return [];
+        return parseListText(hidden.value);
+    }
+
+    function getStoredEmployeeList() {
+        const raw = localStorage.getItem(EMPLOYEE_LIST_KEY);
+        if (!raw) return [];
+        try {
+            const parsed = JSON.parse(raw);
+            return Array.isArray(parsed) ? dedupeEmployees(parsed) : [];
+        } catch {
+            return [];
+        }
+    }
+
+    function setHiddenEmployeeList(names) {
+        const hidden = document.getElementById("employee_list");
+        if (hidden) hidden.value = names.join("\n");
+    }
+
+    function setEditorList(names) {
+        const editor = document.getElementById("employee_list_editor");
+        if (editor) editor.value = names.join("\n");
+    }
+
+    function rebuildSelectOptions(options) {
+        for (const select of getSelectElements()) {
+            const selectedValue = select.value;
+            select.innerHTML = "";
+            for (const optionLabel of options) {
+                const option = document.createElement("option");
+                option.textContent = optionLabel;
+                option.value = optionLabel;
+                if (optionLabel === selectedValue) {
+                    option.selected = true;
+                }
+                select.appendChild(option);
+            }
+            if (options.length > 0 && !options.includes(selectedValue)) {
+                select.value = options[0];
+            }
+        }
+    }
+
+    function applyEmployeeList(names, defaultOptions) {
+        const resolved = dedupeEmployees(names);
+        const options = resolved.length > 0 ? resolved : defaultOptions;
+        rebuildSelectOptions(options);
+        setHiddenEmployeeList(options);
+        setEditorList(options);
+        localStorage.setItem(EMPLOYEE_LIST_KEY, JSON.stringify(options));
+    }
+
+    function openSettings() {
+        const modal = document.getElementById("settings-modal");
+        if (modal) modal.classList.remove("hidden");
+    }
+
+    function closeSettings() {
+        const modal = document.getElementById("settings-modal");
+        if (modal) modal.classList.add("hidden");
+    }
+
+    function saveSettings(defaultOptions) {
+        const editor = document.getElementById("employee_list_editor");
+        const names = parseListText(editor ? editor.value : "");
+        applyEmployeeList(names, defaultOptions);
+        closeSettings();
+    }
+
+    function resetEmployeeListAndRedirect() {
+        localStorage.removeItem(EMPLOYEE_LIST_KEY);
+        const hidden = document.getElementById("employee_list");
+        if (hidden) hidden.value = "";
+        window.location.href = "/resetFields";
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const defaultOptions = dedupeEmployees(getDefaultOptionsFromDom());
+        const initial = getStoredEmployeeList().length > 0
+            ? getStoredEmployeeList()
+            : getHiddenEmployeeList();
+        applyEmployeeList(initial, defaultOptions);
+
+        const openButton = document.getElementById("open-settings");
+        const cancelButton = document.getElementById("cancel-settings");
+        const saveButton = document.getElementById("save-settings");
+
+        if (openButton) {
+            openButton.addEventListener("click", openSettings);
+        }
+        if (cancelButton) {
+            cancelButton.addEventListener("click", closeSettings);
+        }
+        if (saveButton) {
+            saveButton.addEventListener("click", () => saveSettings(defaultOptions));
+        }
+    });
+</script>
 </body>
 </html>
